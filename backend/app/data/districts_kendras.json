@@ -1,0 +1,195 @@
+[
+  {
+    "district_id": "DIST-PUNE",
+    "district_name_en": "Pune",
+    "district_name_mr": "पुणे",
+    "division": "Pune Division",
+    "collectorate_address": "Collector Office, Station Road, Opp. Sassoon Hospital, Pune - 411001",
+    "helpline": "020-26123370",
+    "setu_kendras": [
+      {
+        "name": "Collector Office Central Setu Kendra",
+        "taluka": "Haveli / Pune City",
+        "address": "Ground Floor, Collector Office Complex, Pune",
+        "timings": "10:00 AM - 5:30 PM (Mon-Sat, except 2nd/4th Sat)",
+        "contact": "020-26111195"
+      },
+      {
+        "name": "Baramati Taluka Setu Center",
+        "taluka": "Baramati",
+        "address": "Tahsildar Office, Administrative Complex, Baramati",
+        "timings": "10:00 AM - 5:00 PM",
+        "contact": "02112-222405"
+      },
+      {
+        "name": "Maval Setu Kendra",
+        "taluka": "Maval",
+        "address": "Tahsildar Office, Vadgaon Maval",
+        "timings": "10:00 AM - 5:00 PM",
+        "contact": "02114-235220"
+      }
+    ],
+    "major_talukas": ["Pune City", "Haveli", "Baramati", "Shirur", "Maval", "Khed", "Ambegaon", "Junnar", "Bhor", "Daund", "Purandar", "Indapur", "Mulshi", "Velhe"]
+  },
+  {
+    "district_id": "DIST-MUMBAI-SUB",
+    "district_name_en": "Mumbai Suburban",
+    "district_name_mr": "मुंबई उपनगर",
+    "division": "Konkan Division",
+    "collectorate_address": "Administrative Building, 10th Floor, Govt. Colony, Bandra (East), Mumbai - 400051",
+    "helpline": "022-26556805",
+    "setu_kendras": [
+      {
+        "name": "Bandra Suburban Setu Kendra",
+        "taluka": "Andheri / Bandra",
+        "address": "Administrative Building, Ground Floor, Bandra (E), Mumbai",
+        "timings": "10:00 AM - 5:30 PM",
+        "contact": "022-26514742"
+      },
+      {
+        "name": "Kurla Taluka Citizen Service Center",
+        "taluka": "Kurla",
+        "address": "Tahsildar Office, LBS Marg, Ghatkopar (W), Mumbai",
+        "timings": "10:00 AM - 5:00 PM",
+        "contact": "022-25150912"
+      },
+      {
+        "name": "Borivali Citizen Service Center",
+        "taluka": "Borivali",
+        "address": "Tahsildar Office, Shimpoli, Borivali (W), Mumbai",
+        "timings": "10:00 AM - 5:00 PM",
+        "contact": "022-28991204"
+      }
+    ],
+    "major_talukas": ["Andheri", "Borivali", "Kurla"]
+  },
+  {
+    "district_id": "DIST-NAGPUR",
+    "district_name_en": "Nagpur",
+    "district_name_mr": "नागपूर",
+    "division": "Nagpur Division",
+    "collectorate_address": "Collector Office, Civil Lines, Nagpur - 440001",
+    "helpline": "0712-2564973",
+    "setu_kendras": [
+      {
+        "name": "Nagpur Central Setu Suvidha Kendra",
+        "taluka": "Nagpur Urban",
+        "address": "Collectorate Campus, Civil Lines, Nagpur",
+        "timings": "10:00 AM - 5:30 PM",
+        "contact": "0712-2560820"
+      },
+      {
+        "name": "Katol Taluka Setu Center",
+        "taluka": "Katol",
+        "address": "Tahsildar Office, Katol, Nagpur",
+        "timings": "10:00 AM - 5:00 PM",
+        "contact": "07112-222030"
+      }
+    ],
+    "major_talukas": ["Nagpur Urban", "Nagpur Rural", "Katol", "Savner", "Ramtek", "Umred", "Kamptee", "Hingna", "Narkhed"]
+  },
+  {
+    "district_id": "DIST-NASHIK",
+    "district_name_en": "Nashik",
+    "district_name_mr": "नाशिक",
+    "division": "Nashik Division",
+    "collectorate_address": "Collector Office, Old Agra Road, Nashik - 422002",
+    "helpline": "0253-2578500",
+    "setu_kendras": [
+      {
+        "name": "Nashik District Setu Center",
+        "taluka": "Nashik",
+        "address": "Collectorate Complex, Old Agra Road, Nashik",
+        "timings": "10:00 AM - 5:30 PM",
+        "contact": "0253-2578225"
+      },
+      {
+        "name": "Malegaon Setu Center",
+        "taluka": "Malegaon",
+        "address": "Prant Office Complex, Malegaon",
+        "timings": "10:00 AM - 5:00 PM",
+        "contact": "02554-251201"
+      }
+    ],
+    "major_talukas": ["Nashik", "Malegaon", "Niphad", "Sinnar", "Yeola", "Dindori", "Igatpuri", "Baglan", "Kalwan"]
+  },
+  {
+    "district_id": "DIST-CHH-SAMBHAJINAGAR",
+    "district_name_en": "Chhatrapati Sambhajinagar",
+    "district_name_mr": "छत्रपती संभाजीनगर",
+    "division": "Marathwada Division",
+    "collectorate_address": "Collectorate, Subhash Chandra Bose Road, Chhatrapati Sambhajinagar - 431001",
+    "helpline": "0240-2331200",
+    "setu_kendras": [
+      {
+        "name": "Collectorate Setu Kendra",
+        "taluka": "Sambhajinagar",
+        "address": "Collector Office Compound, Chhatrapati Sambhajinagar",
+        "timings": "10:00 AM - 5:30 PM",
+        "contact": "0240-2334810"
+      }
+    ],
+    "major_talukas": ["Chhatrapati Sambhajinagar", "Paithan", "Gangapur", "Vaijapur", "Kannad", "Khuldabad", "Sillod", "Phulambri", "Soygaon"]
+  },
+  {
+    "district_id": "DIST-KOLHAPUR",
+    "district_name_en": "Kolhapur",
+    "district_name_mr": "कोल्हापूर",
+    "division": "Pune Division",
+    "collectorate_address": "Collector Office, Kadamwadi Road, Kolhapur - 416003",
+    "helpline": "0231-2654811",
+    "setu_kendras": [
+      {
+        "name": "Kolhapur Central Setu Kendra",
+        "taluka": "Karvir",
+        "address": "Collector Office Campus, Kolhapur",
+        "timings": "10:00 AM - 5:30 PM",
+        "contact": "0231-2651520"
+      }
+    ],
+    "major_talukas": ["Karvir", "Hatkanangle", "Shirol", "Kagal", "Radhanagari", "Panhala", "Bhudargad", "Shahuwadi"]
+  },
+  {
+    "district_id": "DIST-THANE",
+    "district_name_en": "Thane",
+    "district_name_mr": "ठाणे",
+    "division": "Konkan Division",
+    "collectorate_address": "Collector Office, Court Naka, Thane (W) - 400601",
+    "helpline": "022-25344041",
+    "setu_kendras": [
+      {
+        "name": "Thane District Setu Center",
+        "taluka": "Thane",
+        "address": "Court Naka, Near Collector Office, Thane (W)",
+        "timings": "10:00 AM - 5:30 PM",
+        "contact": "022-25345520"
+      },
+      {
+        "name": "Kalyan Citizen Center",
+        "taluka": "Kalyan",
+        "address": "Tahsildar Office, Near Railway Station, Kalyan (W)",
+        "timings": "10:00 AM - 5:00 PM",
+        "contact": "0251-2315802"
+      }
+    ],
+    "major_talukas": ["Thane", "Kalyan", "Murbad", "Bhiwandi", "Shahapur", "Ulhasnagar", "Ambarnath"]
+  },
+  {
+    "district_id": "DIST-SOLAPUR",
+    "district_name_en": "Solapur",
+    "district_name_mr": "सोलापूर",
+    "division": "Pune Division",
+    "collectorate_address": "Collector Office, Sidheshwar Peth, Solapur - 413001",
+    "helpline": "0217-2731000",
+    "setu_kendras": [
+      {
+        "name": "Solapur Central Setu Kendra",
+        "taluka": "Solapur North",
+        "address": "Collectorate Campus, Solapur",
+        "timings": "10:00 AM - 5:30 PM",
+        "contact": "0217-2731015"
+      }
+    ],
+    "major_talukas": ["Solapur North", "Solapur South", "Barshi", "Pandharpur", "Akkalkot", "Mohol", "Sangola", "Karmala", "Madha", "Malshiras", "Mangalwedha"]
+  }
+]

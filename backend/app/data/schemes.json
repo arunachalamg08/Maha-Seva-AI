@@ -1,0 +1,483 @@
+[
+  {
+    "id": "SCH-MH-001",
+    "name_en": "Mukhyamantri Majhi Ladki Bahin Yojana",
+    "name_mr": "मुख्यमंत्री माझी लाडकी बहीण योजना",
+    "name_hi": "मुख्यमंत्री माझी लाड़की बहिन योजना",
+    "department_id": "DEPT-WCD",
+    "department_name": "Women and Child Development Department",
+    "category": "Women & Child",
+    "target_beneficiary": "Women aged 21 to 65 years residing in Maharashtra",
+    "financial_benefit": "₹1,500 per month (₹18,000 annually) direct DBT transfer to Aadhaar linked bank account",
+    "short_description": "Financial assistance scheme to promote economic independence, nutrition, and health for underprivileged women in Maharashtra.",
+    "eligibility": {
+      "gender": ["Female"],
+      "min_age": 21,
+      "max_age": 65,
+      "max_annual_income": 250000,
+      "residence_required": "Maharashtra Domicile / 15 years residence",
+      "required_categories": ["All"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": false,
+      "criteria_points": [
+        "Applicant must be a permanent female resident of Maharashtra.",
+        "Age must be between 21 and 65 years.",
+        "Combined family annual income must not exceed ₹2.50 Lakh (exempt if holding Yellow or Orange Ration Card).",
+        "Family members must not be regular government employees or income tax payees.",
+        "Bank account must be Aadhaar seeded and DBT enabled."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card of the applicant",
+      "Maharashtra Domicile Certificate / Ration Card / Voter ID (valid proof of 15 years residence)",
+      "Income Certificate (Income up to ₹2.5 Lakh) or Yellow/Orange Ration Card",
+      "Bank Account Passbook (Aadhaar linked)",
+      "Undertaking (Hamipatra) regarding income tax and government employment status"
+    ],
+    "application_mode": "Online & Nari Shakti Doot App / Anganwadi / Setu Kendra",
+    "official_portal": "https://ladakibahin.maharashtra.gov.in",
+    "rts_delivery_days": 15,
+    "source_gr": "GR No. WCD-2024/CR-142/Desk-2, Dated 28 June 2024"
+  },
+  {
+    "id": "SCH-MH-002",
+    "name_en": "Namo Shetkari Mahasanman Nidhi Yojana",
+    "name_mr": "नमो शेतकरी महासन्मान निधी योजना",
+    "name_hi": "नमो शेतकरी महासम्मान निधि योजना",
+    "department_id": "DEPT-AGRI",
+    "department_name": "Agriculture Department",
+    "category": "Agriculture & Farmers",
+    "target_beneficiary": "Landholding small and marginal farmers in Maharashtra",
+    "financial_benefit": "₹6,000 per year (in 3 equal installments of ₹2,000) supplementary to PM-KISAN, totaling ₹12,000/year",
+    "short_description": "Maharashtra government top-up financial grant to PM-Kisan registered farmer families to support input purchase and livelihood stability.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 18,
+      "max_age": 100,
+      "max_annual_income": null,
+      "residence_required": "Maharashtra",
+      "required_categories": ["All"],
+      "farmer_only": true,
+      "disability_required": false,
+      "student_only": false,
+      "criteria_points": [
+        "Farmer family must be an active beneficiary of PM-KISAN in Maharashtra.",
+        "Must possess cultivable land record (7/12 extract) registered in their name.",
+        "e-KYC and Aadhaar seeding with bank account are mandatory.",
+        "Institutional landholders and serving/retired govt officers are excluded."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card",
+      "Land Ownership Document (7/12 and 8A Extract)",
+      "PM-KISAN Registration ID",
+      "Bank Account Details (Aadhaar NPCI linked)"
+    ],
+    "application_mode": "Online via PM-KISAN / MahaDBT Agriculture Portal",
+    "official_portal": "https://krishi.maharashtra.gov.in",
+    "rts_delivery_days": 30,
+    "source_gr": "GR No. AGRI-2023/CR-88/Desk-7, Dated 13 June 2023"
+  },
+  {
+    "id": "SCH-MH-003",
+    "name_en": "Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY)",
+    "name_mr": "महात्मा ज्योतिराव फुले जन आरोग्य योजना",
+    "name_hi": "महात्मा ज्योतिराव फुले जन आरोग्य योजना",
+    "department_id": "DEPT-HEALTH",
+    "department_name": "Public Health Department",
+    "category": "Health & Medical",
+    "target_beneficiary": "All Ration Card holder families and citizens of Maharashtra",
+    "financial_benefit": "Cashless health insurance coverage up to ₹5,00,000 per family per year for 1,356 medical and surgical procedures",
+    "short_description": "Universal health protection scheme providing completely cashless quality medical care through network hospitals across Maharashtra.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 0,
+      "max_age": 100,
+      "max_annual_income": null,
+      "residence_required": "Maharashtra Domicile",
+      "required_categories": ["All"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": false,
+      "criteria_points": [
+        "Universal coverage extended to all valid Ration Card holders (Yellow, Orange, White) and Maharashtra residents.",
+        "Special coverage for farmers in suicide-prone districts.",
+        "Must have valid ID proof and Ayushman Bharat / MJPJAY beneficiary card."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card / Ayushman Health Card",
+      "Valid Ration Card (Yellow, Orange, or White)",
+      "Tahsildar Income Certificate (for specific non-ration card categories)",
+      "Government Photo Identity Card"
+    ],
+    "application_mode": "Cashless at Empanelled Network Hospitals through Arogyamitra Desk",
+    "official_portal": "https://www.jeevandayee.gov.in",
+    "rts_delivery_days": 1,
+    "source_gr": "GR No. MJPJAY-2023/CR-195/Health-1, Dated 28 July 2023"
+  },
+  {
+    "id": "SCH-MH-004",
+    "name_en": "Sanjay Gandhi Niradhar Anudan Yojana",
+    "name_mr": "संजय गांधी निराधार अनुदान योजना",
+    "name_hi": "संजय गांधी निराधार अनुदान योजना",
+    "department_id": "DEPT-SJSA",
+    "department_name": "Social Justice and Special Assistance Department",
+    "category": "Social Justice & Pension",
+    "target_beneficiary": "Destitute elderly, widows, orphans, disabled persons, and terminal patients",
+    "financial_benefit": "₹1,500 per month for single beneficiary, ₹2,100 per month for families with two or more beneficiaries",
+    "short_description": "Monthly financial pension to destitute individuals unable to earn a livelihood due to age, disability, widowhood, or illness.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 65,
+      "max_age": 100,
+      "max_annual_income": 50000,
+      "residence_required": "15 years in Maharashtra",
+      "required_categories": ["All"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": false,
+      "criteria_points": [
+        "Age 65 years and above (or 40%+ disabled persons, widows, divorced women of any age).",
+        "Total family annual income must not exceed ₹50,000 (relaxed to ₹1,00,000 for families with severe disability).",
+        "Must be a resident of Maharashtra for at least 15 years.",
+        "No earning child supporting the applicant."
+      ]
+    },
+    "required_documents": [
+      "Age Proof / Birth Certificate / School Leaving Certificate",
+      "Income Certificate issued by Tahsildar (Income <= ₹50,000)",
+      "Domicile / 15-year Residence Certificate",
+      "Aadhaar Card and 2 Passport Photos",
+      "Disability Certificate from Civil Surgeon (if applicable)",
+      "Death Certificate of husband (for widows)"
+    ],
+    "application_mode": "Offline at Tahsildar Office / Setu Kendra or Online via Aaple Sarkar",
+    "official_portal": "https://aaplesarkar.mahaonline.gov.in",
+    "rts_delivery_days": 30,
+    "source_gr": "GR No. SGNY-2023/CR-101/Special Assistance-1"
+  },
+  {
+    "id": "SCH-MH-005",
+    "name_en": "Rajarshi Chhatrapati Shahu Maharaj Shikshan Shulkh Shishyavrutti Yojna (EBC)",
+    "name_mr": "राजर्षी छत्रपती शाहू महाराज शिक्षण शुल्क शिष्यवृत्ती योजना (ईबीसी)",
+    "name_hi": "राजर्षि छत्रपति शाहू महाराज शिक्षण शुल्क छात्रवृत्ति योजना (ईबीसी)",
+    "department_id": "DEPT-HED",
+    "department_name": "Higher and Technical Education Department",
+    "category": "Education & Student",
+    "target_beneficiary": "Economically Backward Class (EBC) students in Higher/Technical/Professional courses",
+    "financial_benefit": "50% reimbursement of tuition fees and exam fees for Open/General category students",
+    "short_description": "Fee concession scheme enabling meritorious students from economically weaker sections to pursue higher and technical education.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 16,
+      "max_age": 35,
+      "max_annual_income": 800000,
+      "residence_required": "Maharashtra Domicile",
+      "required_categories": ["Open", "General", "EWS"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": true,
+      "criteria_points": [
+        "Candidate must be a Domicile of Maharashtra.",
+        "Enrolled in CAP-approved technical/professional/higher education course.",
+        "Family annual income must not exceed ₹8,00,000 from all sources.",
+        "Minimum 50% marks in previous examination.",
+        "Maximum 2 children from the same family eligible."
+      ]
+    },
+    "required_documents": [
+      "Domicile Certificate of Maharashtra",
+      "Income Certificate from Tahsildar (up to ₹8 Lakhs)",
+      "CAP Allotment Letter",
+      "Previous Year Marksheet",
+      "Aadhaar Linked Bank Account Passbook",
+      "Ration Card and Fee Receipt"
+    ],
+    "application_mode": "Online via MahaDBT Portal",
+    "official_portal": "https://mahadbt.maharashtra.gov.in",
+    "rts_delivery_days": 30,
+    "source_gr": "GR No. TEM-2018/CR-367/TE-4"
+  },
+  {
+    "id": "SCH-MH-006",
+    "name_en": "Post Matric Scholarship for SC / ST / VJNT / OBC / SBC",
+    "name_mr": "मागासवर्गीय विद्यार्थ्यांसाठी मॅट्रिकोत्तर शिष्यवृत्ती",
+    "name_hi": "अनुसूचित जाति/जनजाति/ओबीसी पोस्ट मैट्रिक छात्रवृत्ति",
+    "department_id": "DEPT-SJSA",
+    "department_name": "Social Justice and Special Assistance Department",
+    "category": "Education & Student",
+    "target_beneficiary": "SC, ST, VJNT, OBC, SBC students pursuing post-matriculation studies",
+    "financial_benefit": "100% tuition/exam fee waiver + monthly maintenance allowance based on course tier",
+    "short_description": "Comprehensive educational financial assistance providing full fee waiver and maintenance stipend to backward category students.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 15,
+      "max_age": 35,
+      "max_annual_income": 250000,
+      "residence_required": "Maharashtra Domicile",
+      "required_categories": ["SC", "ST", "VJNT", "OBC", "SBC"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": true,
+      "criteria_points": [
+        "Applicant must belong to recognized SC/ST/VJNT/OBC/SBC category in Maharashtra.",
+        "For SC/ST: Income limit up to ₹2,50,000. For OBC/VJNT/SBC: Income limit up to ₹1,50,000 for 100% scholarship (up to ₹8,00,000 for freeship).",
+        "Must be admitted through government or CAP centralized admission process.",
+        "Must have valid Caste and Caste Validity Certificate."
+      ]
+    },
+    "required_documents": [
+      "Caste Certificate & Caste Validity Certificate",
+      "Income Certificate issued by Tahsildar",
+      "Domicile Certificate of Maharashtra",
+      "Non-Creamy Layer Certificate (for OBC/VJNT/SBC)",
+      "10th/12th / Previous Marksheets",
+      "College Admission Fee Receipt & Allotment Letter"
+    ],
+    "application_mode": "Online via MahaDBT Portal",
+    "official_portal": "https://mahadbt.maharashtra.gov.in",
+    "rts_delivery_days": 30,
+    "source_gr": "GR No. EBC-2016/CR-221/Education-2"
+  },
+  {
+    "id": "SCH-MH-007",
+    "name_en": "Dr. Panjabrao Deshmukh Vasatigruh Nirvah Bhatta Yojna",
+    "name_mr": "डॉ. पंजाबराव देशमुख वसतिगृह निर्वाह भत्ता योजना",
+    "name_hi": "डॉ. पंजाबराव देशमुख छात्रावास निर्वाह भत्ता योजना",
+    "department_id": "DEPT-HED",
+    "department_name": "Higher and Technical Education Department",
+    "category": "Education & Student",
+    "target_beneficiary": "Children of registered marginal farmers and registered construction workers pursuing professional degrees",
+    "financial_benefit": "₹30,000/year (for MMRDA/Pune/Nagpur/Nashik/Aurangabad cities) or ₹20,000/year (other areas) for hostel sustenance",
+    "short_description": "Hostel allowance scheme for farmer and low-income students studying in government/aided/unaided professional colleges.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 17,
+      "max_age": 30,
+      "max_annual_income": 800000,
+      "residence_required": "Maharashtra Domicile",
+      "required_categories": ["All"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": true,
+      "criteria_points": [
+        "Student admitted to approved professional courses (Engineering, Medical, Pharmacy, Agri, Architecture, etc.).",
+        "Parent must be an Alpabhudharak (Marginal Farmer with land up to 5 acres) or Registered Laborer.",
+        "Family income up to ₹8,00,000 for marginal farmers.",
+        "Not availing government hostel facility."
+      ]
+    },
+    "required_documents": [
+      "Alpabhudharak Certificate (Small Farmer) / 7/12 Extract or BOCW Registration",
+      "Income Certificate from Tahsildar",
+      "Hostel Rent Agreement / Mess Certificate",
+      "Domicile Certificate",
+      "College Bonafide and CAP Allotment Letter"
+    ],
+    "application_mode": "Online via MahaDBT Portal",
+    "official_portal": "https://mahadbt.maharashtra.gov.in",
+    "rts_delivery_days": 30,
+    "source_gr": "GR No. TEM-2018/CR-368/TE-4"
+  },
+  {
+    "id": "SCH-MH-008",
+    "name_en": "Magel Tyala Shettale (Farm Pond on Demand) & Krishi Yantrikikaran",
+    "name_mr": "मागेल त्याला शेततळे व कृषी यांत्रिकीकरण योजना",
+    "name_hi": "मागेल त्याला खेत-तालाब एवं कृषि यंत्रीकरण योजना",
+    "department_id": "DEPT-AGRI",
+    "department_name": "Agriculture Department",
+    "category": "Agriculture & Farmers",
+    "target_beneficiary": "Individual farmers wanting to construct farm ponds or purchase modern farm machinery",
+    "financial_benefit": "Direct subsidy of up to ₹75,000 for Farm Pond construction with plastic lining; up to 50% subsidy on tractors and farm implements",
+    "short_description": "Water security and farm mechanization scheme to protect crops against drought and improve agricultural productivity.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 18,
+      "max_age": 100,
+      "max_annual_income": null,
+      "residence_required": "Maharashtra",
+      "required_categories": ["All"],
+      "farmer_only": true,
+      "disability_required": false,
+      "student_only": false,
+      "criteria_points": [
+        "Farmer must possess minimum 0.60 hectare (1.5 acres) cultivable land.",
+        "Must not have taken prior subsidy for farm pond on the same plot.",
+        "Site must be technically viable for water storage.",
+        "Priority to small and marginal farmers, SC/ST, and drought-hit talukas."
+      ]
+    },
+    "required_documents": [
+      "7/12 & 8A Land Records",
+      "Aadhaar Card and Caste Certificate (if applicable)",
+      "Bank Account Details (Aadhaar linked)",
+      "Self-Declaration of land ownership and no previous grant"
+    ],
+    "application_mode": "Online via MahaDBT Farmer Schemes Portal",
+    "official_portal": "https://mahadbt.maharashtra.gov.in/Farmer/FarmerHome/FarmerHome",
+    "rts_delivery_days": 30,
+    "source_gr": "GR No. Shettale-2016/CR-45/Agri-6"
+  },
+  {
+    "id": "SCH-MH-009",
+    "name_en": "Lek Ladki Yojana",
+    "name_mr": "लेक लाडकी योजना",
+    "name_hi": "लेक लाड़की योजना",
+    "department_id": "DEPT-WCD",
+    "department_name": "Women and Child Development Department",
+    "category": "Women & Child",
+    "target_beneficiary": "Girl children born in poor families (Yellow and Orange Ration Card holders)",
+    "financial_benefit": "Financial grant of total ₹1,01,000 distributed at progressive stages (Birth ₹5k, Std 1 ₹6k, Std 6 ₹7k, Std 11 ₹8k, Age 18 ₹75k)",
+    "short_description": "Stage-wise financial incentive to promote girl child education, prevent female foeticide, and eliminate child marriage in Maharashtra.",
+    "eligibility": {
+      "gender": ["Female"],
+      "min_age": 0,
+      "max_age": 18,
+      "max_annual_income": 100000,
+      "residence_required": "Maharashtra Domicile",
+      "required_categories": ["All"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": false,
+      "criteria_points": [
+        "Girl child born on or after 1 April 2023 in Maharashtra.",
+        "Family holding Yellow or Orange Ration card.",
+        "Parents must undergo family planning surgery after 1 or 2 children.",
+        "Applicable for maximum two girl children per family."
+      ]
+    },
+    "required_documents": [
+      "Birth Certificate of Girl Child",
+      "Yellow or Orange Ration Card",
+      "Parents' Aadhaar Card",
+      "Family Planning Operation Certificate (for second stage grants)",
+      "School Bonafide Certificate at enrollment stages"
+    ],
+    "application_mode": "Offline at Anganwadi Center / CDPO Office or Online through MahaDBT",
+    "official_portal": "https://womenchild.maharashtra.gov.in",
+    "rts_delivery_days": 21,
+    "source_gr": "GR No. WCD-2023/CR-85/Desk-3, Dated 1 August 2023"
+  },
+  {
+    "id": "SCH-MH-010",
+    "name_en": "Shravanbal Seva Rajya Nivruttivetan Yojana",
+    "name_mr": "श्रावणबाळ सेवा राज्य निवृत्तीवेतन योजना",
+    "name_hi": "श्रवणबाल सेवा राज्य पेंशन योजना",
+    "department_id": "DEPT-SJSA",
+    "department_name": "Social Justice and Special Assistance Department",
+    "category": "Social Justice & Pension",
+    "target_beneficiary": "Senior citizens aged 65 years and above in Maharashtra",
+    "financial_benefit": "₹1,500 per month financial pension",
+    "short_description": "Old age pension support for destitute senior citizens in rural and urban Maharashtra.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 65,
+      "max_age": 100,
+      "max_annual_income": 21000,
+      "residence_required": "15 years in Maharashtra",
+      "required_categories": ["All"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": false,
+      "criteria_points": [
+        "Citizen must be 65 years of age or older.",
+        "Category A (BPL List) or Category B (Family income below ₹21,000/year).",
+        "Residing in Maharashtra continuously for at least 15 years."
+      ]
+    },
+    "required_documents": [
+      "Age Proof (School Certificate/Electoral Card/Medical Board Certificate)",
+      "Income Certificate (Tahsildar issued <= ₹21,000) or BPL Certificate",
+      "Domicile / Residence Certificate (15 years)",
+      "Aadhaar Card and Bank Passbook (DBT Linked)"
+    ],
+    "application_mode": "Offline at Tahsildar / Setu Kendra or Online via Aaple Sarkar",
+    "official_portal": "https://aaplesarkar.mahaonline.gov.in",
+    "rts_delivery_days": 30,
+    "source_gr": "GR No. SB-2023/CR-104/SA-1"
+  },
+  {
+    "id": "SCH-MH-011",
+    "name_en": "Mukhyamantri Yuva Karya Prashikshan Yojana (Youth Internship Scheme)",
+    "name_mr": "मुख्यमंत्री युवा कार्य प्रशिक्षण योजना",
+    "name_hi": "मुख्यमंत्री युवा कार्य प्रशिक्षण योजना",
+    "department_id": "DEPT-SKILL",
+    "department_name": "Skill Development, Employment and Entrepreneurship Department",
+    "category": "Employment & Skill",
+    "target_beneficiary": "Unemployed youth aged 18 to 35 years with minimum 12th pass / Diploma / Degree",
+    "financial_benefit": "Monthly stipend of ₹6,000 (12th Pass), ₹8,000 (ITI / Diploma), or ₹10,000 (Graduates / Postgraduates) for 6 months on-the-job training",
+    "short_description": "Skill enhancement internship providing hands-on workplace training and stipend in government and private industries.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 18,
+      "max_age": 35,
+      "max_annual_income": null,
+      "residence_required": "Maharashtra Domicile",
+      "required_categories": ["All"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": false,
+      "criteria_points": [
+        "Candidate must be a resident of Maharashtra.",
+        "Age between 18 and 35 years.",
+        "Minimum educational qualification: 12th Standard, ITI, Diploma, Graduation, or Post Graduation.",
+        "Candidate must be registered on Mahaswayam portal."
+      ]
+    },
+    "required_documents": [
+      "Aadhaar Card",
+      "Maharashtra Domicile Certificate",
+      "Educational Qualification Marksheets & Degree/Diploma Certificates",
+      "Bank Passbook (Aadhaar linked for DBT)",
+      "Mahaswayam Registration ID"
+    ],
+    "application_mode": "Online via Mahaswayam Skill Portal",
+    "official_portal": "https://www.mahaswayam.gov.in",
+    "rts_delivery_days": 15,
+    "source_gr": "GR No. SKILL-2024/CR-72/Desk-3, Dated 9 July 2024"
+  },
+  {
+    "id": "SCH-MH-012",
+    "name_en": "Dr. Babasaheb Ambedkar Swadhar Yojana",
+    "name_mr": "भारतरत्न डॉ. बाबासाहेब आंबेडकर स्वाधार योजना",
+    "name_hi": "डॉ. बाबासाहेब आंबेडकर स्वाधार योजना",
+    "department_id": "DEPT-SJSA",
+    "department_name": "Social Justice and Special Assistance Department",
+    "category": "Education & Student",
+    "target_beneficiary": "Scheduled Caste (SC) and Neo-Buddhist students who did not get government hostel admission",
+    "financial_benefit": "Annual allowance up to ₹60,000 (Division HQ), ₹51,000 (District HQ), or ₹43,000 (Taluka HQ) for lodging, boarding and books",
+    "short_description": "Financial stipend for SC students pursuing professional & higher education outside their home district who could not secure government hostel seats.",
+    "eligibility": {
+      "gender": ["Male", "Female", "Other"],
+      "min_age": 16,
+      "max_age": 30,
+      "max_annual_income": 250000,
+      "residence_required": "Maharashtra Domicile",
+      "required_categories": ["SC", "Neo-Buddhist"],
+      "farmer_only": false,
+      "disability_required": false,
+      "student_only": true,
+      "criteria_points": [
+        "Belong to Scheduled Caste (SC) or Neo-Buddhist community.",
+        "Family income less than ₹2,50,000 per annum.",
+        "Admitted in recognized higher/technical college at a distance > 5 km from hometown.",
+        "Did not receive admission in Social Justice Govt Hostel.",
+        "Minimum 50% marks in previous examination (40% for Divyang)."
+      ]
+    },
+    "required_documents": [
+      "Caste Certificate and Caste Validity Certificate",
+      "Income Certificate from Tahsildar (<= ₹2.5 Lakh)",
+      "Domicile Certificate of Maharashtra",
+      "Hostel Rejection / Non-Availability Certificate or Self-Declaration",
+      "Rental Agreement & Landlord Receipt",
+      "Marksheet and College Bonafide Certificate"
+    ],
+    "application_mode": "Offline to Assistant Commissioner Social Welfare / MahaDBT",
+    "official_portal": "https://sjsa.maharashtra.gov.in",
+    "rts_delivery_days": 30,
+    "source_gr": "GR No. BVC-2016/CR-268/Edu-2"
+  }
+]

@@ -1,0 +1,106 @@
+[
+  {
+    "token_id": "MH-GRV-2026-2339",
+    "citizen_name": "Suresh Kale",
+    "phone_number": "9876543210",
+    "email": null,
+    "district": "Nagpur",
+    "taluka": "District HQ",
+    "department_id": "DEPT-REV",
+    "department_name": "Revenue and Forest Department",
+    "category": "Ration Card Delay",
+    "subject": "Delay in issuing new Ration Card",
+    "description": "Applied 40 days ago, no status update from DSO office.",
+    "priority_level": "High",
+    "priority_score": 75,
+    "current_status": "Registered",
+    "assigned_officer": "Nodal Officer (Revenue and Forest Department, Nagpur)",
+    "sla_target_days": 15,
+    "days_remaining": 15,
+    "created_at": "2026-10-02 15:38:05",
+    "updated_at": "2026-10-02 15:38:05",
+    "timeline": [
+      {
+        "timestamp": "2026-10-02 15:38:05",
+        "stage": "Registered",
+        "status": "Submitted",
+        "officer_remark": "Grievance received under Maharashtra Citizen Redressal Framework. Token #MH-GRV-2026-2339 assigned.",
+        "updated_by": "MahaSeva Citizen Gateway"
+      }
+    ]
+  },
+  {
+    "token_id": "MH-GRV-2026-7857",
+    "citizen_name": "Suresh Kale",
+    "phone_number": "9876543210",
+    "email": null,
+    "district": "Nagpur",
+    "taluka": "District HQ",
+    "department_id": "DEPT-REV",
+    "department_name": "Revenue and Forest Department",
+    "category": "Ration Card Delay",
+    "subject": "Delay in issuing new Ration Card",
+    "description": "Applied 40 days ago, no status update from DSO office.",
+    "priority_level": "High",
+    "priority_score": 75,
+    "current_status": "Registered",
+    "assigned_officer": "Nodal Officer (Revenue and Forest Department, Nagpur)",
+    "sla_target_days": 15,
+    "days_remaining": 15,
+    "created_at": "2026-10-01 23:09:01",
+    "updated_at": "2026-10-01 23:09:01",
+    "timeline": [
+      {
+        "timestamp": "2026-10-01 23:09:01",
+        "stage": "Registered",
+        "status": "Submitted",
+        "officer_remark": "Grievance received under Maharashtra Citizen Redressal Framework. Token #MH-GRV-2026-7857 assigned.",
+        "updated_by": "MahaSeva Citizen Gateway"
+      }
+    ]
+  },
+  {
+    "token_id": "MH-GRV-2026-8492",
+    "citizen_name": "Ramesh Tukaram Patil",
+    "phone_number": "9822019482",
+    "email": "ramesh.patil@example.com",
+    "district": "Pune",
+    "taluka": "Haveli",
+    "department_id": "DEPT-REV",
+    "department_name": "Revenue and Forest Department",
+    "category": "Land Records / 7-12 Delay",
+    "subject": "Delay in mutation entry (Ferfar) for agricultural land",
+    "description": "Submitted online application for mutation entry 45 days ago at Haveli Tahsil office. Statutory RTS period is 30 days.",
+    "priority_level": "High",
+    "priority_score": 85,
+    "current_status": "Under Investigation",
+    "assigned_officer": "Naib Tahsildar (Revenue) Haveli",
+    "sla_target_days": 15,
+    "days_remaining": 4,
+    "created_at": "2026-09-20 23:09:00",
+    "updated_at": "2026-09-29 23:09:00",
+    "timeline": [
+      {
+        "timestamp": "2026-09-20 23:09:00",
+        "stage": "Registered",
+        "status": "Submitted",
+        "officer_remark": "Grievance registered and assigned tracking token MH-GRV-2026-8492.",
+        "updated_by": "MahaSeva Automated System"
+      },
+      {
+        "timestamp": "2026-09-23 23:09:00",
+        "stage": "Assigned",
+        "status": "In Review",
+        "officer_remark": "Assigned to Circle Officer Haveli for Talathi verification.",
+        "updated_by": "District Nodal Officer (Pune)"
+      },
+      {
+        "timestamp": "2026-09-29 23:09:00",
+        "stage": "Under Investigation",
+        "status": "Action In Progress",
+        "officer_remark": "Notice served to Talathi to complete pending ferfar within 5 working days.",
+        "updated_by": "Naib Tahsildar (Haveli)"
+      }
+    ]
+  }
+]

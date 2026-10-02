@@ -1,0 +1,35 @@
+{
+  "categories": {
+    "identity_proofs": [
+      { "id": "DOC-AADHAAR", "name": "Aadhaar Card", "issuing_agency": "UIDAI", "accepted_everywhere": true },
+      { "id": "DOC-PAN", "name": "PAN Card", "issuing_agency": "Income Tax Department", "accepted_everywhere": false },
+      { "id": "DOC-VOTER", "name": "Voter ID (EPIC)", "issuing_agency": "Election Commission of India", "accepted_everywhere": true },
+      { "id": "DOC-PASSPORT", "name": "Indian Passport", "issuing_agency": "Ministry of External Affairs", "accepted_everywhere": true },
+      { "id": "DOC-DL", "name": "Driving License", "issuing_agency": "Motor Vehicles Department / RTO", "accepted_everywhere": true }
+    ],
+    "address_proofs": [
+      { "id": "DOC-RATION", "name": "Ration Card", "issuing_agency": "Food and Civil Supplies Dept", "notes": "Yellow, Orange, or White" },
+      { "id": "DOC-EBILL", "name": "Electricity Bill (Last 3 Months)", "issuing_agency": "MSEDCL / Adani / Tata Power / BEST", "notes": "Must match applicant or parent name" },
+      { "id": "DOC-TAX", "name": "Municipal Property Tax Receipt", "issuing_agency": "Municipal Corporation / Council / Gram Panchayat", "notes": "Current financial year" },
+      { "id": "DOC-RENT", "name": "Registered Rent Agreement", "issuing_agency": "Sub-Registrar Office", "notes": "Minimum 11 months with police verification" }
+    ],
+    "income_and_social": [
+      { "id": "DOC-INC-TAH", "name": "Income Certificate from Tahsildar", "issuing_agency": "Revenue Dept (Tahsildar)", "validity": "1 or 3 financial years" },
+      { "id": "DOC-FORM16", "name": "Form 16 / Salary Certificate", "issuing_agency": "Employer / Income Tax Portal", "validity": "Preceding FY" },
+      { "id": "DOC-CASTE", "name": "Caste Certificate", "issuing_agency": "Sub-Divisional Officer (SDO)", "validity": "Lifetime" },
+      { "id": "DOC-CV", "name": "Caste Validity Certificate", "issuing_agency": "District Caste Scrutiny Committee", "validity": "Lifetime" },
+      { "id": "DOC-NCL", "name": "Non-Creamy Layer Certificate", "issuing_agency": "Tahsildar / SDO", "validity": "1 or 3 FYs (as stated)" },
+      { "id": "DOC-DOM", "name": "Domicile Certificate (15 Years)", "issuing_agency": "Tahsildar / SDO", "validity": "Lifetime" }
+    ],
+    "land_and_agriculture": [
+      { "id": "DOC-712", "name": "7/12 Extract (Satbara Utara)", "issuing_agency": "Revenue Dept (MahaBhumi / Talathi)", "notes": "Digitally signed with QR code" },
+      { "id": "DOC-8A", "name": "8-A Khate Utara (Holding Extract)", "issuing_agency": "Revenue Dept (Talathi)", "notes": "Total agricultural holding summary" },
+      { "id": "DOC-ALP", "name": "Small/Marginal Farmer Certificate (Alpabhudharak)", "issuing_agency": "Tahsildar / Talathi", "notes": "Land up to 5 acres" }
+    ]
+  },
+  "rules_and_guidelines": [
+    "Under Maharashtra RTS Act 2015, self-attested copies are accepted; notary is not mandatory for standard applications.",
+    "DigiLocker fetched documents are deemed legally equivalent to original physical certificates under Section 9A of IT Act.",
+    "Name on Aadhaar must match the spelling across school leaving certificate and land documents to avoid rejection."
+  ]
+}

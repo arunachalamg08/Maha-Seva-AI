@@ -1,0 +1,110 @@
+[
+  {
+    "id": "DEPT-REV",
+    "name_en": "Revenue and Forest Department",
+    "name_mr": "महसूल व वन विभाग",
+    "name_hi": "राजस्व एवं वन विभाग",
+    "icon": "Building2",
+    "key_services_count": 42,
+    "nodal_officer": "District Collector / Sub-Divisional Officer",
+    "helpline": "1800-120-8040",
+    "website": "https://mreg.maharashtra.gov.in",
+    "description": "Administers land records (7/12, 8A), revenue certificates (Income, Domicile, Caste, Non-Creamy Layer), stamp duty, and registration."
+  },
+  {
+    "id": "DEPT-AGRI",
+    "name_en": "Agriculture Department",
+    "name_mr": "कृषी विभाग",
+    "name_hi": "कृषि विभाग",
+    "icon": "Sprout",
+    "key_services_count": 28,
+    "nodal_officer": "District Superintending Agriculture Officer (DSAO)",
+    "helpline": "1800-233-4000 / Kisan Call Center: 1551",
+    "website": "https://krishi.maharashtra.gov.in",
+    "description": "Executes farmer welfare, crop insurance (PMFBY), farm pond subsidies (Magel Tyala Shettale), and Namo Shetkari Mahasanman Nidhi."
+  },
+  {
+    "id": "DEPT-WCD",
+    "name_en": "Women and Child Development Department",
+    "name_mr": "महिला व बालविकास विभाग",
+    "name_hi": "महिला एवं बाल विकास विभाग",
+    "icon": "HeartHandshake",
+    "key_services_count": 18,
+    "nodal_officer": "District Women & Child Development Officer",
+    "helpline": "Women Helpline: 181 / Childline: 1098",
+    "website": "https://womenchild.maharashtra.gov.in",
+    "description": "Implements Majhi Ladki Bahin Yojana, Lek Ladki Yojana, nutrition programs, and protection of women and children."
+  },
+  {
+    "id": "DEPT-SJSA",
+    "name_en": "Social Justice and Special Assistance Department",
+    "name_mr": "सामाजिक न्याय व विशेष सहाय्य विभाग",
+    "name_hi": "सामाजिक न्याय एवं विशेष सहायता विभाग",
+    "icon": "ShieldCheck",
+    "key_services_count": 35,
+    "nodal_officer": "Assistant Commissioner of Social Welfare",
+    "helpline": "1800-22-1981",
+    "website": "https://sjsa.maharashtra.gov.in",
+    "description": "Disburses scholarships for SC/ST/OBC, Sanjay Gandhi Niradhar Yojana, Swadhar scheme, and elderly & disability support pensions."
+  },
+  {
+    "id": "DEPT-HEALTH",
+    "name_en": "Public Health Department",
+    "name_mr": "सार्वजनिक आरोग्य विभाग",
+    "name_hi": "सार्वजनिक स्वास्थ्य विभाग",
+    "icon": "Activity",
+    "key_services_count": 22,
+    "nodal_officer": "Civil Surgeon / District Health Officer (DHO)",
+    "helpline": "Health Helpline: 104 / Ambulance: 108",
+    "website": "https://arogya.maharashtra.gov.in",
+    "description": "Oversees Mahatma Jyotirao Phule Jan Arogya Yojana (MJPJAY), primary health centers, rural hospitals, and immunization."
+  },
+  {
+    "id": "DEPT-HED",
+    "name_en": "Higher and Technical Education Department",
+    "name_mr": "उच्च व तंत्र शिक्षण विभाग",
+    "name_hi": "उच्च एवं तकनीकी शिक्षा विभाग",
+    "icon": "GraduationCap",
+    "key_services_count": 25,
+    "nodal_officer": "Joint Director of Higher / Technical Education",
+    "helpline": "022-49150800 (MahaDBT Helpline)",
+    "website": "https://hted.maharashtra.gov.in",
+    "description": "Facilitates higher education admissions, Rajarshi Shahu Maharaj EBC fee waiver, Panjabrao Deshmukh hostel allowances."
+  },
+  {
+    "id": "DEPT-FOOD",
+    "name_en": "Food, Civil Supplies and Consumer Protection",
+    "name_mr": "अन्न, नागरी पुरवठा व ग्राहक संरक्षण विभाग",
+    "name_hi": "खाद्य, नागरिक आपूर्ति एवं उपभोक्ता संरक्षण",
+    "icon": "ShoppingBag",
+    "key_services_count": 15,
+    "nodal_officer": "District Supply Officer (DSO)",
+    "helpline": "1800-22-4950 / 1967",
+    "website": "https://mahafood.gov.in",
+    "description": "Manages National Food Security Act (NFSA), Antyodaya and Priority Household Ration Cards, and Fair Price Shops."
+  },
+  {
+    "id": "DEPT-RUR",
+    "name_en": "Rural Development Department",
+    "name_mr": "ग्रामविकास विभाग",
+    "name_hi": "ग्रामीण विकास विभाग",
+    "icon": "Home",
+    "key_services_count": 30,
+    "nodal_officer": "Chief Executive Officer (CEO, Zilla Parishad)",
+    "helpline": "022-22025267",
+    "website": "https://rdd.maharashtra.gov.in",
+    "description": "Oversees Gram Panchayats, rural roads, water supply, PMAY-G rural housing, and civil certificates at village level."
+  },
+  {
+    "id": "DEPT-SKILL",
+    "name_en": "Skill Development, Employment & Entrepreneurship",
+    "name_mr": "कौशल्य विकास, रोजगार व उद्योजकता विभाग",
+    "name_hi": "कौशल विकास, रोजगार एवं उद्यमिता विभाग",
+    "icon": "Briefcase",
+    "key_services_count": 16,
+    "nodal_officer": "Assistant Director, Skill Development",
+    "helpline": "1800-120-8041",
+    "website": "https://www.mahaswayam.gov.in",
+    "description": "Drives apprenticeship training, Mukhyamantri Yuva Karya Prashikshan Yojana, job fairs, and ITI vocational skilling."
+  }
+]

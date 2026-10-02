@@ -1,0 +1,49 @@
+{
+  "terms": {
+    "RTS Act": {
+      "en": "Maharashtra Right to Public Services Act, 2015",
+      "mr": "महाराष्ट्र लोकसेवा हक्क अधिनियम, २०१५",
+      "hi": "महाराष्ट्र लोकसेवा अधिकार अधिनियम, 2015"
+    },
+    "Aaple Sarkar": {
+      "en": "Aaple Sarkar Portal",
+      "mr": "आपले सरकार पोर्टल",
+      "hi": "आपले सरकार पोर्टल"
+    },
+    "MahaDBT": {
+      "en": "MahaDBT Direct Benefit Transfer",
+      "mr": "महाडीबीटी थेट लाभ हस्तांतरण",
+      "hi": "महाडीबीटी प्रत्यक्ष लाभ अंतरण"
+    },
+    "7/12 Extract": {
+      "en": "7/12 Satbara Extract",
+      "mr": "७/१२ सातबारा उतारा",
+      "hi": "7/12 सातबारा खतौनी"
+    },
+    "Tahsildar": {
+      "en": "Tahsildar / Sub-Divisional Magistrate",
+      "mr": "तहसीलदार / उपविभागीय दंडाधिकारी",
+      "hi": "तहसीलदार / उप-विभागीय अधिकारी"
+    },
+    "Setu Kendra": {
+      "en": "Setu Suvidha Kendra",
+      "mr": "सेतू सुविधा केंद्र",
+      "hi": "सेतु सुविधा केंद्र"
+    },
+    "Talathi": {
+      "en": "Talathi / Patwari",
+      "mr": "तलाठी / पटवारी",
+      "hi": "तलाठी / पटवारी"
+    }
+  },
+  "protected_patterns": [
+    "^MH-GRV-\\d{4}-\\d+$",
+    "^SCH-MH-\\d{3}$",
+    "^SRV-MH-\\d{3}$",
+    "^DEPT-[A-Z]+$",
+    "^DIST-[A-Z-]+$",
+    "^https?://",
+    "^\\d{10}$",
+    "^\\d{4}-\\d{2}-\\d{2}"
+  ]
+}

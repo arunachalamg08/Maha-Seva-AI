@@ -1,0 +1,233 @@
+[
+  {
+    "id": "SRV-MH-001",
+    "name_en": "Income Certificate (उत्पन्नाचा दाखला)",
+    "name_mr": "उत्पन्नाचे प्रमाणपत्र",
+    "name_hi": "आय प्रमाण पत्र",
+    "department_id": "DEPT-REV",
+    "department_name": "Revenue and Forest Department",
+    "category": "Certificates & Revenue",
+    "issuing_authority": "Tahsildar / Naib Tahsildar",
+    "statutory_rts_days": 15,
+    "first_appellate_authority": "Sub-Divisional Officer (SDO / Prant)",
+    "second_appellate_authority": "Additional Collector / Collector",
+    "government_fee": "₹33 (Online MahaOnline platform fee) / ₹50 (Setu Kendra)",
+    "validity": "1 Year or 3 Years (as per certificate type)",
+    "short_description": "Official proof of annual income required for scholarships, government subsidies, ration card, and welfare benefits.",
+    "required_documents": [
+      { "name": "Identity Proof", "options": ["Aadhaar Card", "PAN Card", "Voter ID", "Passport"] },
+      { "name": "Address Proof", "options": ["Ration Card", "Electricity Bill", "Water Bill", "Telephone Bill"] },
+      { "name": "Income Proof", "options": ["Salary Slip with Form 16", "ITR Acknowledgment", "Talathi Income Report / Patwari Panchanama", "Affidavit of Income"] },
+      { "name": "Age / Residence Proof", "options": ["School Leaving Certificate", "Birth Certificate", "Domicile Certificate"] }
+    ],
+    "procedure_steps": [
+      "Register and login on the Aaple Sarkar portal (aaplesarkar.mahaonline.gov.in).",
+      "Select 'Revenue Department' and choose 'Income Certificate'.",
+      "Fill the online application form with personal, family, and occupation details.",
+      "Upload scanned copies of ID proof, address proof, and income documentation (Talathi report or Form 16).",
+      "Pay the statutory fee (₹33.60) via online gateway.",
+      "Track application with Application ID. Digitally signed certificate will be generated within 15 working days."
+    ],
+    "portal_url": "https://aaplesarkar.mahaonline.gov.in"
+  },
+  {
+    "id": "SRV-MH-002",
+    "name_en": "Domicile and Age & Nationality Certificate",
+    "name_mr": "अधिवास (डोमिसाईल) आणि वय व राष्ट्रीयत्व प्रमाणपत्र",
+    "name_hi": "अधिवास एवं राष्ट्रीयता प्रमाण पत्र",
+    "department_id": "DEPT-REV",
+    "department_name": "Revenue and Forest Department",
+    "category": "Certificates & Revenue",
+    "issuing_authority": "Sub-Divisional Officer (SDO) / Tahsildar",
+    "statutory_rts_days": 15,
+    "first_appellate_authority": "Sub-Divisional Officer (SDO)",
+    "second_appellate_authority": "Additional Collector",
+    "government_fee": "₹33.60 (Online) / ₹50 (Setu)",
+    "validity": "Lifetime (Permanent)",
+    "short_description": "Legal proof that a person is a permanent resident of Maharashtra for at least 15 continuous years, essential for state quota college admissions and MPSC/govt jobs.",
+    "required_documents": [
+      { "name": "Identity Proof", "options": ["Aadhaar Card", "Voter ID", "Passport"] },
+      { "name": "Address Proof", "options": ["Ration Card", "Electricity Bill", "Property Tax Receipt"] },
+      { "name": "Continuous 15-Year Residence Proof", "options": ["School Leaving Certificate", "15 years light bills / rent agreement", "Father's Domicile Certificate", "Birth Certificate"] },
+      { "name": "Self-Declaration", "options": ["Affidavit on ₹100 Stamp / Self-Declaration Form under RTS Act"] }
+    ],
+    "procedure_steps": [
+      "Access Aaple Sarkar Maharashtra portal.",
+      "Navigate to Revenue Department -> Age, Nationality and Domicile Certificate.",
+      "Upload applicant's photograph and mandatory residence proofs covering 15 years.",
+      "Submit application and note the 18-digit application token.",
+      "Download barcode/QR verified certificate upon approval."
+    ],
+    "portal_url": "https://aaplesarkar.mahaonline.gov.in"
+  },
+  {
+    "id": "SRV-MH-003",
+    "name_en": "Caste Certificate (जातीचे प्रमाणपत्र)",
+    "name_mr": "जात प्रमाणपत्र",
+    "name_hi": "जाति प्रमाण पत्र",
+    "department_id": "DEPT-REV",
+    "department_name": "Revenue and Forest Department",
+    "category": "Certificates & Revenue",
+    "issuing_authority": "Sub-Divisional Officer (SDO / Deputy Collector)",
+    "statutory_rts_days": 45,
+    "first_appellate_authority": "Additional Collector",
+    "second_appellate_authority": "Divisional Commissioner",
+    "government_fee": "₹33.60",
+    "validity": "Lifetime",
+    "short_description": "Constitutional certificate affirming the caste/tribe category (SC, ST, VJ, NT, OBC, SBC) for reservations and scholarships.",
+    "required_documents": [
+      { "name": "Identity & Address Proof", "options": ["Aadhaar Card", "Ration Card"] },
+      { "name": "Pre-Cutoff Caste Evidence", "options": ["School Leaving Certificate of Father/Grandfather mentioning caste", "Birth record of Father/Uncle before cutoff date (SC: 1950, VJ/NT: 1961, OBC: 1967, ST: 1950)", "7/12 Land extract mentioning caste", "Kotwal Book Record (गाव नमुना नंबर १४)"] },
+      { "name": "Genealogy Tree (Vanshavali)", "options": ["Affidavit with family genealogical tree"] }
+    ],
+    "procedure_steps": [
+      "Login to Aaple Sarkar -> Revenue Services -> Caste Certificate.",
+      "Enter personal genealogy, grandfather/father birth and education details.",
+      "Upload historic caste proof prior to the mandated presidential order cutoff date.",
+      "Verification by Talathi / Circle Officer -> Order by Sub-Divisional Officer.",
+      "Delivery within 45 days under RTS Act."
+    ],
+    "portal_url": "https://aaplesarkar.mahaonline.gov.in"
+  },
+  {
+    "id": "SRV-MH-004",
+    "name_en": "Non-Creamy Layer Certificate (NCL)",
+    "name_mr": "नॉन-क्रिमी लेयर प्रमाणपत्र",
+    "name_hi": "नॉन-क्रीमी लेयर प्रमाण पत्र",
+    "department_id": "DEPT-REV",
+    "department_name": "Revenue and Forest Department",
+    "category": "Certificates & Revenue",
+    "issuing_authority": "Sub-Divisional Officer / Tahsildar",
+    "statutory_rts_days": 21,
+    "first_appellate_authority": "Sub-Divisional Officer",
+    "second_appellate_authority": "Collector",
+    "government_fee": "₹33.60",
+    "validity": "1 Financial Year or 3 Financial Years",
+    "short_description": "Certifies that a candidate belonging to OBC/VJNT/SBC category does not belong to the creamy layer (family income <= ₹8 Lakhs for past 3 consecutive years).",
+    "required_documents": [
+      { "name": "Caste Certificate", "options": ["Applicant's valid Maharashtra Caste Certificate"] },
+      { "name": "3 Years Income Proof", "options": ["Tahsildar Income Certificate of last 3 financial years", "Form 16 / ITR of parents for last 3 years"] },
+      { "name": "Identity & Address Proof", "options": ["Aadhaar Card", "Ration Card"] }
+    ],
+    "procedure_steps": [
+      "Apply through Aaple Sarkar portal under Revenue Services.",
+      "Provide income records of parents for 3 consecutive financial years.",
+      "Tahsildar verifies income threshold (< ₹8,00,000/annum) excluding agricultural income.",
+      "Certificate generated with digital signature."
+    ],
+    "portal_url": "https://aaplesarkar.mahaonline.gov.in"
+  },
+  {
+    "id": "SRV-MH-005",
+    "name_en": "Digital 7/12 (Satbara) & 8A Land Records Extract",
+    "name_mr": "डिजिटल स्वाक्षरीत ७/१२ आणि ८-अ उतारा",
+    "name_hi": "डिजिटल हस्ताक्षरित 7/12 एवं 8-ए खतौनी",
+    "department_id": "DEPT-REV",
+    "department_name": "Revenue and Forest Department / Land Records",
+    "category": "Land Records & Agriculture",
+    "issuing_authority": "Talathi / Department of Land Records (MahaBhumi)",
+    "statutory_rts_days": 1,
+    "first_appellate_authority": "Tahsildar",
+    "second_appellate_authority": "Sub-Divisional Officer",
+    "government_fee": "₹15 per digital 7/12 extract",
+    "validity": "Valid till next mutation / official use",
+    "short_description": "Legally valid digitally signed record of land ownership, survey number, crop details, and encumbrances under Maharashtra Land Revenue Code.",
+    "required_documents": [
+      { "name": "Land Identifiers", "options": ["District, Taluka, Village Name", "Survey Number / Gat Number / ULPIN"] }
+    ],
+    "procedure_steps": [
+      "Visit MahaBhumi Mahabhulekh Portal (digitalsatbara.mahabhumi.gov.in).",
+      "Login / Register as Citizen or Recharge Wallet.",
+      "Select District -> Taluka -> Village and enter Gat / Survey Number.",
+      "Pay ₹15 fee online.",
+      "Instantly download QR-coded, digitally signed 7/12 and 8A extracts (no physical seal/signature required in court/bank)."
+    ],
+    "portal_url": "https://digitalsatbara.mahabhumi.gov.in"
+  },
+  {
+    "id": "SRV-MH-006",
+    "name_en": "Ration Card Services (New / Member Addition / Transfer)",
+    "name_mr": "रेशन कार्ड सेवा (नवीन / नाव समाविष्ट / स्थलांतरण)",
+    "name_hi": "राशन कार्ड सेवाएं (नया / नाम जोड़ना / स्थानांतरण)",
+    "department_id": "DEPT-FOOD",
+    "department_name": "Food, Civil Supplies and Consumer Protection Department",
+    "category": "Food & Supplies",
+    "issuing_authority": "District Supply Officer (DSO) / Food Distribution Officer (FDO) / Tahsildar",
+    "statutory_rts_days": 30,
+    "first_appellate_authority": "District Supply Officer / Deputy Collector",
+    "second_appellate_authority": "Divisional Supply Officer",
+    "government_fee": "₹20 to ₹50",
+    "validity": "Valid with regular verification",
+    "short_description": "Public Distribution System (PDS) ration card for subsidized grains and identification of family economic category.",
+    "required_documents": [
+      { "name": "Identity Proof of Head of Family", "options": ["Aadhaar Card", "Voter ID"] },
+      { "name": "Surrender / Deletion Certificate", "options": ["Name deletion certificate from previous ration card"] },
+      { "name": "Residence & Income Proof", "options": ["Electricity Bill", "Tahsildar Income Certificate", "LPG Gas Connection Book"] },
+      { "name": "Family Member Proofs", "options": ["Aadhaar cards of all members", "Birth Certificate for minors"] }
+    ],
+    "procedure_steps": [
+      "Apply through MahaFood portal (mahafood.gov.in) or RCMS / Aaple Sarkar.",
+      "Submit application with family tree and deletion certificate from prior location.",
+      "Physical / Digital verification by Supply Inspector.",
+      "Issue of digitized smart ration card / RCMS entry."
+    ],
+    "portal_url": "https://mahafood.gov.in"
+  },
+  {
+    "id": "SRV-MH-007",
+    "name_en": "Birth and Death Certificate",
+    "name_mr": "जन्म आणि मृत्यू नोंद दाखला",
+    "name_hi": "जन्म एवं मृत्यु प्रमाण पत्र",
+    "department_id": "DEPT-RUR",
+    "department_name": "Rural Development & Urban Development Departments",
+    "category": "Civil Registration",
+    "issuing_authority": "Gram Sevak (Rural) / Medical Officer of Health - Municipal Corporation/Council (Urban)",
+    "statutory_rts_days": 7,
+    "first_appellate_authority": "Block Development Officer (BDO) / Ward Officer",
+    "second_appellate_authority": "Chief Executive Officer (CEO, ZP) / Municipal Commissioner",
+    "government_fee": "₹20 to ₹30",
+    "validity": "Lifetime",
+    "short_description": "Statutory civil registration document certifying the birth or death occurrence under the Registration of Births and Deaths Act.",
+    "required_documents": [
+      { "name": "Hospital Discharge / Birth Report", "options": ["Form No. 1 from Hospital / Nursing Home"] },
+      { "name": "Parents' / Deceased's ID Proof", "options": ["Aadhaar Card", "Ration Card", "Marriage Certificate"] },
+      { "name": "Death Specifics", "options": ["Form No. 2 from Doctor, Crematorium / Burial Ground Receipt"] }
+    ],
+    "procedure_steps": [
+      "Access Aaple Sarkar or respective Municipal Corporation portal (e.g. PMC, BMC, NMMC) / CRS portal.",
+      "Select Birth or Death registration service.",
+      "Input Hospital registration number and date of event.",
+      "Pay nominal municipal fee.",
+      "Download digitally signed certificate within 7 working days."
+    ],
+    "portal_url": "https://aaplesarkar.mahaonline.gov.in"
+  },
+  {
+    "id": "SRV-MH-008",
+    "name_en": "Maharashtra Shop & Establishment Registration (Gumasta)",
+    "name_mr": "दुकान व आस्थापना नोंदणी (गुमास्ता परवाना)",
+    "name_hi": "दुकान एवं प्रतिष्ठान पंजीकरण (गुमास्ता लाइसेंस)",
+    "department_id": "DEPT-LABOR",
+    "department_name": "Industries, Energy and Labour Department",
+    "category": "Business & Labor",
+    "issuing_authority": "Facilitator / Labor Officer / Municipal Corporation",
+    "statutory_rts_days": 1,
+    "first_appellate_authority": "Government Labour Officer (GLO)",
+    "second_appellate_authority": "Assistant Labour Commissioner",
+    "government_fee": "Free for <= 9 workers (Intimation Form 0-9), Tiered fee for 10+ workers",
+    "validity": "Lifetime intimation for 0-9 workers / 1-3 years for 10+",
+    "short_description": "Mandatory business registration license required for opening any shop, commercial establishment, or office in Maharashtra.",
+    "required_documents": [
+      { "name": "Proprietor / Partner ID & Address", "options": ["Aadhaar Card", "PAN Card"] },
+      { "name": "Premises Proof", "options": ["Electricity Bill", "Rent Agreement with NOC", "Property Tax Receipt"] },
+      { "name": "Business Proof", "options": ["Photo of shop with Marathi Signboard in Devanagari script", "Partnership Deed / MOA (if company)"] }
+    ],
+    "procedure_steps": [
+      "Visit Aaple Sarkar Labour Portal / Mahakamgar (lms.mahaonline.gov.in).",
+      "Choose Form 'F' (Intimation for <= 9 workers) or Form 'A' (10+ workers).",
+      "Upload shop front photo displaying board with clear Marathi lettering.",
+      "Instant automated certificate generation (Intimation receipt) upon submission."
+    ],
+    "portal_url": "https://lms.mahaonline.gov.in"
+  }
+]

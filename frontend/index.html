@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="mr" dir="ltr" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>महासेवा AI | महाराष्ट्र शासन नागरिक सेवा गेटवे</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            maha: {
+              navy: '#0F2942',
+              blue: '#1E40AF',
+              saffron: '#E65100',
+              saffronLight: '#FF9800',
+              emerald: '#059669',
+              gold: '#D97706',
+              dark: '#0A192F',
+              card: '#FFFFFF'
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans"', '"Noto Sans Devanagari"', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700;800&family=Noto+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- MahaSeva I18n Engine Script -->
+  <script src="js/i18n.js"></script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans Devanagari', 'Noto Sans', system-ui, sans-serif;
+    }
+    .tricolor-stripe {
+      background: linear-gradient(90deg, #FF9933 0%, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%, #138808 100%);
+      height: 4px;
+    }
+    .chat-bubble-user {
+      background: linear-gradient(135deg, #1E40AF 0%, #1D4ED8 100%);
+    }
+    .chat-bubble-ai {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+    }
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-orange-100 selection:text-orange-900">
+
+  <!-- Top Tricolor Accent Bar -->
+  <div class="tricolor-stripe"></div>
+
+  <!-- Dynamic Header -->
+  <header id="main-header" class="sticky top-0 z-50"></header>
+
+  <!-- Dynamic Content Container -->
+  <main id="app-container" class="flex-grow"></main>
+
+  <!-- Universal Footer -->
+  <footer id="main-footer" class="bg-slate-900 text-slate-400 text-xs border-t border-slate-800 mt-16"></footer>
+
+  <!-- Notification Toast Box -->
+  <div id="toast-box" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 max-w-sm pointer-events-none"></div>
+
+  <!-- Application Logic -->
+  <script>
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'http://localhost:8000/api/v1' 
+      : `${window.location.origin}/api/v1`;
+
+    let currentView = 'home';
+    let chatHistory = [];
+
+    function initChatHistory() {
+      chatHistory = [
+        {
+          sender: 'ai',
+          text: t('assistant.welcome_msg'),
+          citations: [t('services.heading'), 'Aaple Sarkar Portal']
+        }
+      ];
+    }
+
+    function toggleMobileMenu() {
+      const el = document.getElementById('mobile-menu');
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function showToast(title, message, type = 'success') {
+      const box = document.getElementById('toast-box');
+      const toast = document.createElement('div');
+      const bg = type === 'success' ? 'bg-emerald-600' : (type === 'error' ? 'bg-rose-600' : 'bg-blue-600');
+      toast.className = `${bg} text-white px-4 py-3 rounded-lg shadow-xl text-xs flex items-start space-x-2 transition-all transform duration-300 pointer-events-auto`;
+      toast.innerHTML = `
+        <div class="font-bold flex-1">
+          <div>${title}</div>
+          <div class="text-[11px] font-normal text-white/90 mt-0.5">${message}</div>
+        </div>
+      `;
+      box.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function navigate(view) {
+      currentView = view;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      renderCurrentView();
+    }
+
+    // Helper formatting functions
+    function formatMarkdown(text) {
+      if (!text) return '';
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n\n/g, '<br/><br/>')
+        .replace(/\n•/g, '<br/>•')
+        .replace(/\n/g, '<br/>');
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Main Renderer
+    async function renderCurrentView() {
+      renderHeader();
+      renderFooter();
+
+      const container = document.getElementById('app-container');
+      if (currentView === 'home') {
+        container.innerHTML = renderHomeView();
+      } else if (currentView === 'assistant') {
+        container.innerHTML = renderAssistantView();
+        setupAssistantEvents();
+      } else if (currentView === 'eligibility') {
+        container.innerHTML = renderEligibilityView();
+      } else if (currentView === 'schemes') {
+        container.innerHTML = `<div class="text-center py-20"><div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-amber-500 border-t-transparent"></div></div>`;
+        container.innerHTML = await renderSchemesView();
+      } else if (currentView === 'services') {
+        container.innerHTML = `<div class="text-center py-20"><div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-amber-500 border-t-transparent"></div></div>`;
+        container.innerHTML = await renderServicesView();
+      } else if (currentView === 'grievance') {
+        container.innerHTML = renderGrievanceView();
+      } else if (currentView === 'directory') {
+        container.innerHTML = `<div class="text-center py-20"><div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-amber-500 border-t-transparent"></div></div>`;
+        container.innerHTML = await renderDirectoryView();
+      } else if (currentView === 'admin') {
+        container.innerHTML = `<div class="text-center py-20"><div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-amber-500 border-t-transparent"></div></div>`;
+        container.innerHTML = await renderAdminView();
+      } else if (currentView === 'translations') {
+        container.innerHTML = `<div class="text-center py-20"><div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-amber-500 border-t-transparent"></div></div>`;
+        container.innerHTML = await renderTranslationsView();
+      }
+
+      MahaI18n.updateDocumentAttributes();
+      lucide.createIcons();
+    }
+
+    function renderHeader() {
+      const header = document.getElementById('main-header');
+      const lang = MahaI18n.currentLanguage;
+      
+      header.innerHTML = `
+        <!-- Prototype Advisory Banner -->
+        <aside aria-label="Prototype Notice" class="bg-amber-500 text-slate-950 text-xs font-semibold px-4 py-1.5 flex items-center justify-between shadow-sm">
+          <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="bg-slate-900 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">${t('app.prototype_badge')}</span>
+              <span>${t('app.prototype_notice')}</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-3 text-[11px]">
+              <span>${t('app.rts_badge')}</span>
+              <span>•</span>
+              <span>${t('app.zero_hallucination')}</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main Nav -->
+        <div class="bg-maha-navy text-white shadow-md">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+              
+              <!-- Logo & Brand -->
+              <div class="flex items-center space-x-3 cursor-pointer" onclick="navigate('home')">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-black text-2xl shadow-lg border border-amber-300/30">
+                  म
+                </div>
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-xl font-bold tracking-tight text-white">MahaSeva <span class="text-amber-400">AI</span></span>
+                    <span class="text-xs bg-blue-900/80 text-blue-200 px-2 py-0.5 rounded border border-blue-700 font-bold">${t('app.title')}</span>
+                  </div>
+                  <p class="text-[11px] text-slate-300 font-normal">${t('app.tagline')}</p>
+                </div>
+              </div>
+
+              <!-- Nav Links -->
+              <nav class="hidden lg:flex items-center space-x-1 font-medium text-xs sm:text-sm">
+                <button onclick="navigate('home')" class="nav-btn px-3 py-2 rounded-lg ${currentView === 'home' ? 'bg-white/20 text-white font-bold' : 'text-slate-200 hover:text-white hover:bg-white/10'} transition">${t('nav.home')}</button>
+                <button onclick="navigate('assistant')" class="nav-btn px-3 py-2 rounded-lg ${currentView === 'assistant' ? 'bg-white/20 text-white font-bold' : 'text-slate-200 hover:text-white hover:bg-white/10'} transition flex items-center space-x-1.5">
+                  <i data-lucide="bot" class="w-4 h-4 text-amber-400"></i>
+                  <span>${t('nav.assistant')}</span>
+                </button>
+                <button onclick="navigate('eligibility')" class="nav-btn px-3 py-2 rounded-lg ${currentView === 'eligibility' ? 'bg-white/20 text-white font-bold' : 'text-slate-200 hover:text-white hover:bg-white/10'} transition flex items-center space-x-1">
+                  <i data-lucide="calculator" class="w-4 h-4 text-emerald-400"></i>
+                  <span>${t('nav.eligibility')}</span>
+                </button>
+                <button onclick="navigate('schemes')" class="nav-btn px-3 py-2 rounded-lg ${currentView === 'schemes' ? 'bg-white/20 text-white font-bold' : 'text-slate-200 hover:text-white hover:bg-white/10'} transition">${t('nav.schemes')}</button>
+                <button onclick="navigate('services')" class="nav-btn px-3 py-2 rounded-lg ${currentView === 'services' ? 'bg-white/20 text-white font-bold' : 'text-slate-200 hover:text-white hover:bg-white/10'} transition">${t('nav.services')}</button>
+                <button onclick="navigate('grievance')" class="nav-btn px-3 py-2 rounded-lg ${currentView === 'grievance' ? 'bg-white/20 text-white font-bold' : 'text-slate-200 hover:text-white hover:bg-white/10'} transition">${t('nav.grievance')}</button>
+                <button onclick="navigate('directory')" class="nav-btn px-3 py-2 rounded-lg ${currentView === 'directory' ? 'bg-white/20 text-white font-bold' : 'text-slate-200 hover:text-white hover:bg-white/10'} transition">${t('nav.directory')}</button>
+                <button onclick="navigate('admin')" class="nav-btn px-3 py-2 rounded-lg ${currentView === 'admin' ? 'bg-amber-500/30 text-amber-300 font-bold' : 'text-amber-300 hover:bg-amber-500/20'} transition flex items-center space-x-1">
+                  <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                  <span>${t('nav.officer')}</span>
+                </button>
+              </nav>
+
+              <!-- Language Selector -->
+              <div class="flex items-center space-x-3">
+                <div class="inline-flex rounded-lg bg-slate-800 p-1 border border-slate-700 text-xs" role="group" aria-label="Language Selector">
+                  <button onclick="setLanguage('mr')" id="lang-mr" class="px-2.5 py-1 rounded transition ${lang === 'mr' ? 'font-bold bg-amber-500 text-slate-950 shadow' : 'text-slate-300 hover:text-white font-medium'}">मराठी</button>
+                  <button onclick="setLanguage('hi')" id="lang-hi" class="px-2.5 py-1 rounded transition ${lang === 'hi' ? 'font-bold bg-amber-500 text-slate-950 shadow' : 'text-slate-300 hover:text-white font-medium'}">हिंदी</button>
+                  <button onclick="setLanguage('en')" id="lang-en" class="px-2.5 py-1 rounded transition ${lang === 'en' ? 'font-bold bg-amber-500 text-slate-950 shadow' : 'text-slate-300 hover:text-white font-medium'}">English</button>
+                </div>
+
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-lg bg-slate-800 text-white" aria-label="Toggle Navigation">
+                  <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Mobile Dropdown -->
+          <div id="mobile-menu" class="hidden lg:hidden bg-slate-900 border-t border-slate-800 px-4 py-3 space-y-2 text-sm">
+            <button onclick="navigate('home'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">${t('nav.home')}</button>
+            <button onclick="navigate('assistant'); toggleMobileMenu()" class="block w-full text-left py-2 text-amber-400 font-medium">${t('nav.assistant')}</button>
+            <button onclick="navigate('eligibility'); toggleMobileMenu()" class="block w-full text-left py-2 text-emerald-400 font-medium">${t('nav.eligibility')}</button>
+            <button onclick="navigate('schemes'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">${t('nav.schemes')}</button>
+            <button onclick="navigate('services'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">${t('nav.services')}</button>
+            <button onclick="navigate('grievance'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">${t('nav.grievance')}</button>
+            <button onclick="navigate('directory'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-200 font-medium">${t('nav.directory')}</button>
+            <button onclick="navigate('admin'); toggleMobileMenu()" class="block w-full text-left py-2 text-amber-300 font-medium">${t('nav.officer')}</button>
+            <button onclick="navigate('translations'); toggleMobileMenu()" class="block w-full text-left py-2 text-blue-300 font-medium">${t('nav.admin_translations')}</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFooter() {
+      const footer = document.getElementById('main-footer');
+      footer.innerHTML = `
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div class="flex items-center space-x-2 text-white font-bold text-base mb-3">
+                <span class="w-6 h-6 rounded bg-amber-500 text-slate-950 flex items-center justify-center font-black text-xs">म</span>
+                <span>${t('app.title')}</span>
+              </div>
+              <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                ${t('footer.tagline')}
+              </p>
+              <div class="flex items-center space-x-2 text-[11px] text-amber-400 font-medium">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                <span>${t('app.zero_hallucination')}</span>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="text-white font-semibold text-sm mb-3">${t('footer.important_links')}</h4>
+              <ul class="space-y-2 text-xs">
+                <li><a href="https://aaplesarkar.mahaonline.gov.in" target="_blank" class="hover:text-amber-400 transition flex items-center space-x-1"><span>Aaple Sarkar (आपले सरकार)</span> <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
+                <li><a href="https://mahadbt.maharashtra.gov.in" target="_blank" class="hover:text-amber-400 transition flex items-center space-x-1"><span>MahaDBT (महाडीबीटी)</span> <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
+                <li><a href="https://digitalsatbara.mahabhumi.gov.in" target="_blank" class="hover:text-amber-400 transition flex items-center space-x-1"><span>MahaBhumi (डिजिटल ७/१२)</span> <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
+                <li><a href="https://mahafood.gov.in" target="_blank" class="hover:text-amber-400 transition flex items-center space-x-1"><span>MahaFood (अन्न व नागरी पुरवठा)</span> <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 class="text-white font-semibold text-sm mb-3">${t('footer.helplines_heading')}</h4>
+              <ul class="space-y-2 text-xs">
+                <li class="flex items-center justify-between"><span class="text-slate-300">Aaple Sarkar:</span> <span class="font-bold text-white">1800-120-8040</span></li>
+                <li class="flex items-center justify-between"><span class="text-slate-300">Women Helpline:</span> <span class="font-bold text-white">181</span></li>
+                <li class="flex items-center justify-between"><span class="text-slate-300">Health Helpline:</span> <span class="font-bold text-white">104 / 108</span></li>
+                <li class="flex items-center justify-between"><span class="text-slate-300">Kisan Call Center:</span> <span class="font-bold text-white">1551</span></li>
+                <li class="flex items-center justify-between"><span class="text-slate-300">Emergency:</span> <span class="font-bold text-white">112</span></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 class="text-white font-semibold text-sm mb-3">${t('footer.rts_act_heading')}</h4>
+              <p class="text-slate-400 text-xs leading-relaxed mb-3">
+                ${t('footer.rts_act_desc')}
+              </p>
+              <button onclick="navigate('translations')" class="mt-2 text-[11px] text-amber-400 hover:underline flex items-center space-x-1">
+                <i data-lucide="languages" class="w-3.5 h-3.5"></i>
+                <span>${t('nav.admin_translations')}</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px]">
+            <p>${t('footer.copyright')}</p>
+            <p class="mt-2 sm:mt-0">${t('footer.disclaimer')}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // 1. HOME VIEW
+    // ==========================================
+    function renderHomeView() {
+      return `
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-b from-maha-navy via-slate-900 to-slate-950 text-white pt-12 pb-20 px-4 relative overflow-hidden">
+          <div class="max-w-6xl mx-auto text-center relative z-10">
+            
+            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs text-amber-300 font-semibold mb-6 border border-white/10">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>${t('hero.badge')}</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+              ${t('hero.title_p1')} <br class="hidden sm:inline"/> 
+              <span class="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-200 bg-clip-text text-transparent">${t('hero.title_p2')}</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mb-8 font-light">
+              ${t('hero.subtitle')}
+            </p>
+
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto bg-white rounded-2xl p-2 shadow-2xl flex items-center space-x-2 text-slate-800 mb-8 border-2 border-amber-400/50">
+              <div class="pl-3 text-slate-400">
+                <i data-lucide="search" class="w-5 h-5"></i>
+              </div>
+              <input type="text" id="hero-search-input" placeholder="${t('hero.search_placeholder')}" aria-label="${t('hero.search_placeholder')}" class="w-full text-sm font-medium px-2 py-2 focus:outline-none placeholder:text-slate-400" onkeydown="if(event.key==='Enter') executeHeroSearch()" />
+              <button onclick="executeHeroSearch()" class="bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl hover:from-amber-600 hover:to-orange-700 transition shadow flex items-center space-x-1.5 whitespace-nowrap">
+                <span>${t('hero.search_button')}</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <!-- Suggestion Chips -->
+            <div class="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-300">
+              <span class="text-slate-400">${t('hero.popular_searches')}</span>
+              <button onclick="quickAsk('${t('hero.chip_ladki_bahin')}')" class="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full border border-white/10 transition">${t('hero.chip_ladki_bahin')}</button>
+              <button onclick="quickAsk('${t('hero.chip_shetkari')}')" class="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full border border-white/10 transition">${t('hero.chip_shetkari')}</button>
+              <button onclick="quickAsk('${t('hero.chip_income')}')" class="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full border border-white/10 transition">${t('hero.chip_income')}</button>
+              <button onclick="quickAsk('${t('hero.chip_satbara')}')" class="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full border border-white/10 transition">${t('hero.chip_satbara')}</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats Strip -->
+        <div class="max-w-6xl mx-auto px-4 -mt-10 relative z-20">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl shadow-lg border border-slate-100 flex items-center space-x-4">
+              <div class="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+                <i data-lucide="landmark" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <div class="text-2xl font-black text-slate-900">${t('stats.schemes_count')}</div>
+                <div class="text-xs text-slate-500 font-medium">${t('stats.schemes_sub')}</div>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-lg border border-slate-100 flex items-center space-x-4">
+              <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
+                <i data-lucide="clock" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <div class="text-2xl font-black text-slate-900">${t('stats.rts_count')}</div>
+                <div class="text-xs text-slate-500 font-medium">${t('stats.rts_sub')}</div>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-lg border border-slate-100 flex items-center space-x-4">
+              <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+                <i data-lucide="languages" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <div class="text-2xl font-black text-slate-900">${t('stats.languages_count')}</div>
+                <div class="text-xs text-slate-500 font-medium">${t('stats.languages_sub')}</div>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-lg border border-slate-100 flex items-center space-x-4">
+              <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
+                <i data-lucide="map-pin" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <div class="text-2xl font-black text-slate-900">${t('stats.districts_count')}</div>
+                <div class="text-xs text-slate-500 font-medium">${t('stats.districts_sub')}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 Feature Cards -->
+        <section class="max-w-6xl mx-auto px-4 py-16">
+          <div class="text-center mb-12">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">${t('features.heading')}</h2>
+            <p class="text-slate-600 text-sm mt-2">${t('features.subheading')}</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div onclick="navigate('assistant')" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-slate-200 cursor-pointer flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                  <i data-lucide="bot" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-amber-600 transition">${t('feat.assistant_title')}</h3>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed">${t('feat.assistant_desc')}</p>
+              </div>
+              <div class="mt-6 flex items-center text-xs font-bold text-amber-600 space-x-1">
+                <span>${t('feat.assistant_btn')}</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+
+            <div onclick="navigate('eligibility')" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-slate-200 cursor-pointer flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                  <i data-lucide="calculator" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition">${t('feat.eligibility_title')}</h3>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed">${t('feat.eligibility_desc')}</p>
+              </div>
+              <div class="mt-6 flex items-center text-xs font-bold text-emerald-600 space-x-1">
+                <span>${t('feat.eligibility_btn')}</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+
+            <div onclick="navigate('schemes')" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-slate-200 cursor-pointer flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                  <i data-lucide="book-open" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-orange-600 transition">${t('feat.schemes_title')}</h3>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed">${t('feat.schemes_desc')}</p>
+              </div>
+              <div class="mt-6 flex items-center text-xs font-bold text-orange-600 space-x-1">
+                <span>${t('feat.schemes_btn')}</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+
+            <div onclick="navigate('services')" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-slate-200 cursor-pointer flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                  <i data-lucide="file-check" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition">${t('feat.services_title')}</h3>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed">${t('feat.services_desc')}</p>
+              </div>
+              <div class="mt-6 flex items-center text-xs font-bold text-blue-600 space-x-1">
+                <span>${t('feat.services_btn')}</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+
+            <div onclick="navigate('grievance')" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-slate-200 cursor-pointer flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                  <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-rose-600 transition">${t('feat.grievance_title')}</h3>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed">${t('feat.grievance_desc')}</p>
+              </div>
+              <div class="mt-6 flex items-center text-xs font-bold text-rose-600 space-x-1">
+                <span>${t('feat.grievance_btn')}</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+
+            <div onclick="navigate('directory')" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition border border-slate-200 cursor-pointer flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                  <i data-lucide="building" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-purple-600 transition">${t('feat.directory_title')}</h3>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed">${t('feat.directory_desc')}</p>
+              </div>
+              <div class="mt-6 flex items-center text-xs font-bold text-purple-600 space-x-1">
+                <span>${t('feat.directory_btn')}</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      `;
+    }
+
+    // ==========================================
+    // 2. AI ASSISTANT VIEW
+    // ==========================================
+    function renderAssistantView() {
+      if (chatHistory.length === 0) initChatHistory();
+
+      return `
+        <div class="max-w-5xl mx-auto px-4 py-8">
+          
+          <div class="bg-maha-navy text-white p-6 rounded-3xl shadow-lg mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center space-x-4">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950 flex items-center justify-center font-black text-2xl shadow">
+                <i data-lucide="bot" class="w-8 h-8"></i>
+              </div>
+              <div>
+                <h2 class="text-xl font-bold flex items-center space-x-2">
+                  <span>${t('assistant.header_title')}</span>
+                  <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-400/30 font-bold">${t('assistant.verified_badge')}</span>
+                </h2>
+                <p class="text-xs text-slate-300">${t('assistant.header_subtitle')}</p>
+              </div>
+            </div>
+
+            <div class="text-xs text-slate-300 bg-white/10 px-4 py-2 rounded-xl border border-white/10 flex items-center space-x-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+              <span>${t('assistant.fallback_badge')}</span>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden flex flex-col" style="height: 600px;">
+            
+            <div id="chat-messages" class="flex-1 p-6 overflow-y-auto space-y-4 bg-slate-50/50">
+              ${chatHistory.map(msg => renderChatMessage(msg)).join('')}
+            </div>
+
+            <div class="p-3 bg-slate-100 border-t border-slate-200 flex flex-wrap gap-2 text-xs">
+              <span class="text-slate-500 font-semibold py-1">${t('assistant.suggested_label')}</span>
+              <button onclick="askPrompt('${t('hero.chip_ladki_bahin')} पात्रता काय आहे?')" class="bg-white hover:bg-amber-50 text-slate-700 px-3 py-1 rounded-full border border-slate-300 shadow-sm transition">${t('hero.chip_ladki_bahin')}</button>
+              <button onclick="askPrompt('${t('hero.chip_income')} RTS कालावधी किती?')" class="bg-white hover:bg-amber-50 text-slate-700 px-3 py-1 rounded-full border border-slate-300 shadow-sm transition">${t('hero.chip_income')}</button>
+              <button onclick="askPrompt('${t('hero.chip_shetkari')} अर्ज प्रक्रिया कशी आहे?')" class="bg-white hover:bg-amber-50 text-slate-700 px-3 py-1 rounded-full border border-slate-300 shadow-sm transition">${t('hero.chip_shetkari')}</button>
+            </div>
+
+            <div class="p-4 bg-white border-t border-slate-200 flex items-center space-x-3">
+              <input type="text" id="chat-input" placeholder="${t('assistant.placeholder')}" aria-label="${t('assistant.placeholder')}" class="flex-1 text-sm bg-slate-100 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium" onkeydown="if(event.key==='Enter') sendChatMessage()" />
+              <button onclick="sendChatMessage()" class="bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold px-6 py-3 rounded-xl hover:from-amber-600 hover:to-orange-700 transition shadow flex items-center space-x-1.5">
+                <span>${t('assistant.send_btn')}</span>
+                <i data-lucide="send" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function renderChatMessage(msg) {
+      if (msg.sender === 'user') {
+        return `
+          <div class="flex justify-end">
+            <div class="chat-bubble-user text-white px-5 py-3.5 rounded-2xl rounded-tr-none text-sm max-w-lg shadow font-medium leading-relaxed">
+              ${escapeHtml(msg.text)}
+            </div>
+          </div>
+        `;
+      } else {
+        return `
+          <div class="flex justify-start items-start space-x-3">
+            <div class="w-8 h-8 rounded-full bg-maha-navy text-amber-400 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-1 shadow">
+              म
+            </div>
+            <div class="chat-bubble-ai text-slate-800 px-5 py-4 rounded-2xl rounded-tl-none text-sm max-w-2xl shadow-sm leading-relaxed">
+              <div class="prose prose-sm">${formatMarkdown(msg.text)}</div>
+              
+              ${msg.citations && msg.citations.length > 0 ? `
+                <div class="mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-[11px] text-slate-500">
+                  <span class="font-semibold text-slate-700">${t('assistant.citations_label')}</span>
+                  ${msg.citations.map(c => `<span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono border border-slate-200">${c}</span>`).join('')}
+                </div>
+              ` : ''}
+
+              <div class="mt-2 text-[10px] text-slate-400 font-normal">
+                ${t('assistant.disclaimer_text')}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function setupAssistantEvents() {
+      const msgs = document.getElementById('chat-messages');
+      if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const q = input.value.trim();
+      if (!q) return;
+
+      input.value = '';
+      chatHistory.push({ sender: 'user', text: q });
+      
+      const msgs = document.getElementById('chat-messages');
+      msgs.innerHTML = chatHistory.map(msg => renderChatMessage(msg)).join('');
+      msgs.scrollTop = msgs.scrollHeight;
+
+      const loadingBubble = document.createElement('div');
+      loadingBubble.id = 'loading-bubble';
+      loadingBubble.className = 'flex justify-start items-center space-x-2 text-xs text-slate-500 pl-10';
+      loadingBubble.innerHTML = `
+        <div class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-amber-500 border-t-transparent"></div>
+        <span>${t('assistant.searching')}</span>
+      `;
+      msgs.appendChild(loadingBubble);
+      msgs.scrollTop = msgs.scrollHeight;
+
+      try {
+        const res = await fetch(`${API_BASE}/assistant/ask`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q, language: MahaI18n.currentLanguage })
+        });
+        const data = await res.json();
+        
+        const lb = document.getElementById('loading-bubble');
+        if (lb) lb.remove();
+
+        chatHistory.push({
+          sender: 'ai',
+          text: data.answer,
+          citations: data.source_citations || []
+        });
+
+        msgs.innerHTML = chatHistory.map(msg => renderChatMessage(msg)).join('');
+        msgs.scrollTop = msgs.scrollHeight;
+        lucide.createIcons();
+      } catch (err) {
+        const lb = document.getElementById('loading-bubble');
+        if (lb) lb.remove();
+        chatHistory.push({
+          sender: 'ai',
+          text: t('assistant.error_msg'),
+          citations: []
+        });
+        msgs.innerHTML = chatHistory.map(msg => renderChatMessage(msg)).join('');
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+    }
+
+    function askPrompt(p) {
+      const inp = document.getElementById('chat-input');
+      if (inp) {
+        inp.value = p;
+        sendChatMessage();
+      }
+    }
+
+    function quickAsk(q) {
+      chatHistory.push({ sender: 'user', text: q });
+      navigate('assistant');
+      setTimeout(() => {
+        sendChatMessageDirect(q);
+      }, 300);
+    }
+
+    async function sendChatMessageDirect(q) {
+      try {
+        const res = await fetch(`${API_BASE}/assistant/ask`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q, language: MahaI18n.currentLanguage })
+        });
+        const data = await res.json();
+        chatHistory.push({
+          sender: 'ai',
+          text: data.answer,
+          citations: data.source_citations || []
+        });
+        renderCurrentView();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function executeHeroSearch() {
+      const q = document.getElementById('hero-search-input').value.trim();
+      if (q) quickAsk(q);
+    }
+
+    // ==========================================
+    // 3. ELIGIBILITY CALCULATOR VIEW
+    // ==========================================
+    function renderEligibilityView() {
+      return `
+        <div class="max-w-4xl mx-auto px-4 py-8">
+          
+          <div class="text-center mb-8">
+            <div class="inline-flex items-center space-x-2 bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full font-bold mb-2">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span>${t('eligibility.badge')}</span>
+            </div>
+            <h2 class="text-3xl font-extrabold text-slate-900">${t('eligibility.title')}</h2>
+            <p class="text-slate-600 text-sm mt-1">${t('eligibility.subtitle')}</p>
+          </div>
+
+          <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-slate-200 mb-10">
+            <form id="eligibility-form" onsubmit="calculateEligibility(event)" class="space-y-6">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-2">${t('eligibility.age_label')}</label>
+                  <input type="number" id="elig-age" min="1" max="120" value="28" required class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium" />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-2">${t('eligibility.gender_label')}</label>
+                  <select id="elig-gender" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                    <option value="Female">${t('eligibility.gender_female')}</option>
+                    <option value="Male">${t('eligibility.gender_male')}</option>
+                    <option value="Other">${t('eligibility.gender_other')}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-2">${t('eligibility.category_label')}</label>
+                  <select id="elig-category" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                    <option value="Open">${t('eligibility.cat_open')}</option>
+                    <option value="OBC">${t('eligibility.cat_obc')}</option>
+                    <option value="SC">${t('eligibility.cat_sc')}</option>
+                    <option value="ST">${t('eligibility.cat_st')}</option>
+                    <option value="VJNT">${t('eligibility.cat_vjnt')}</option>
+                    <option value="EWS">${t('eligibility.cat_ews')}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-2">${t('eligibility.income_label')}</label>
+                  <input type="number" id="elig-income" min="0" step="5000" value="180000" required class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium" />
+                  <span class="text-[11px] text-slate-400 mt-1 block">${t('eligibility.income_hint')}</span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-2">${t('eligibility.district_label')}</label>
+                  <select id="elig-district" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                    <option value="Pune">Pune / पुणे</option>
+                    <option value="Mumbai Suburban">Mumbai Suburban / मुंबई उपनगर</option>
+                    <option value="Nagpur">Nagpur / नागपूर</option>
+                    <option value="Nashik">Nashik / नाशिक</option>
+                    <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar / छत्रपती संभाजीनगर</option>
+                    <option value="Kolhapur">Kolhapur / कोल्हापूर</option>
+                    <option value="Thane">Thane / ठाणे</option>
+                    <option value="Solapur">Solapur / सोलापूर</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <input type="checkbox" id="elig-farmer" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                  <span class="text-xs font-bold text-slate-800">${t('eligibility.farmer_label')}</span>
+                </label>
+
+                <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <input type="checkbox" id="elig-student" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                  <span class="text-xs font-bold text-slate-800">${t('eligibility.student_label')}</span>
+                </label>
+
+                <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                  <input type="checkbox" id="elig-disability" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                  <span class="text-xs font-bold text-slate-800">${t('eligibility.disability_label')}</span>
+                </label>
+              </div>
+
+              <div class="text-center pt-4">
+                <button type="submit" class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold text-sm px-8 py-3.5 rounded-xl hover:from-emerald-700 hover:to-teal-800 transition shadow-lg inline-flex items-center space-x-2">
+                  <i data-lucide="sparkles" class="w-5 h-5"></i>
+                  <span>${t('eligibility.submit_btn')}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div id="eligibility-results" class="hidden space-y-6"></div>
+
+        </div>
+      `;
+    }
+
+    async function calculateEligibility(e) {
+      e.preventDefault();
+      const payload = {
+        age: parseInt(document.getElementById('elig-age').value),
+        gender: document.getElementById('elig-gender').value,
+        annual_income: parseFloat(document.getElementById('elig-income').value),
+        category: document.getElementById('elig-category').value,
+        district: document.getElementById('elig-district').value,
+        is_farmer: document.getElementById('elig-farmer').checked,
+        is_student: document.getElementById('elig-student').checked,
+        has_disability: document.getElementById('elig-disability').checked
+      };
+
+      const resBox = document.getElementById('eligibility-results');
+      resBox.classList.remove('hidden');
+      resBox.innerHTML = `
+        <div class="text-center py-8">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent"></div>
+          <p class="text-xs text-slate-500 mt-2">${t('eligibility.evaluating')}</p>
+        </div>
+      `;
+
+      try {
+        const res = await fetch(`${API_BASE}/eligibility/check`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        
+        let html = `
+          <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white p-6 rounded-3xl shadow-lg flex items-center justify-between">
+            <div>
+              <div class="text-xs text-emerald-300 font-bold uppercase tracking-wider">${t('eligibility.summary_title')}</div>
+              <div class="text-2xl font-black mt-1">${t('eligibility.summary_text', { eligible: data.eligible_count, total: data.total_evaluated })}</div>
+              <div class="text-xs text-emerald-100 mt-1">${data.summary_advice}</div>
+            </div>
+            <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center font-black text-2xl text-emerald-300 border border-white/10">
+              ${data.eligible_count}
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 pt-4">${t('eligibility.breakdown_heading')}</h3>
+
+          <div class="space-y-4">
+        `;
+
+        data.matches.forEach(m => {
+          const isElig = m.eligible;
+          html += `
+            <div class="bg-white p-6 rounded-2xl shadow-sm border ${isElig ? 'border-emerald-300 bg-emerald-50/20' : 'border-slate-200'}">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-base font-bold text-slate-900">${m.scheme_name}</span>
+                    <span class="text-[11px] px-2 py-0.5 rounded font-bold ${isElig ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-slate-100 text-slate-600'}">
+                      ${isElig ? t('eligibility.eligible_badge') : t('eligibility.ineligible_badge')}
+                    </span>
+                  </div>
+                  <div class="text-xs text-slate-500 font-medium mt-0.5">${m.category} • ${m.financial_benefit}</div>
+                </div>
+
+                <a href="${m.official_portal}" target="_blank" class="text-xs font-bold bg-slate-900 text-white hover:bg-amber-600 px-4 py-2 rounded-xl transition inline-flex items-center space-x-1 whitespace-nowrap self-start">
+                  <span>${t('eligibility.apply_portal_btn')}</span>
+                  <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                </a>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-3 border-t border-slate-100 text-xs">
+                <div>
+                  <div class="font-bold text-emerald-800 mb-1 flex items-center space-x-1">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                    <span>${t('eligibility.met_conditions')} (${m.satisfied_conditions.length}):</span>
+                  </div>
+                  <ul class="list-disc list-inside space-y-0.5 text-slate-600 text-[11px]">
+                    ${m.satisfied_conditions.map(c => `<li>${c}</li>`).join('')}
+                  </ul>
+                </div>
+
+                ${m.unmet_conditions.length > 0 ? `
+                  <div>
+                    <div class="font-bold text-rose-700 mb-1 flex items-center space-x-1">
+                      <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                      <span>${t('eligibility.unmet_conditions')}:</span>
+                    </div>
+                    <ul class="list-disc list-inside space-y-0.5 text-rose-600 text-[11px]">
+                      ${m.unmet_conditions.map(c => `<li>${c}</li>`).join('')}
+                    </ul>
+                  </div>
+                ` : `
+                  <div>
+                    <div class="font-bold text-slate-700 mb-1">${t('eligibility.required_docs')}</div>
+                    <div class="flex flex-wrap gap-1 text-[11px]">
+                      ${m.required_documents.slice(0, 3).map(d => `<span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">${d}</span>`).join('')}
+                    </div>
+                  </div>
+                `}
+              </div>
+
+              <div class="text-[10px] text-slate-400 mt-3 pt-2 border-t border-slate-100">
+                ${t('eligibility.gr_label')} <strong>${m.source_gr}</strong>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+        resBox.innerHTML = html;
+        lucide.createIcons();
+      } catch (err) {
+        resBox.innerHTML = `<div class="p-4 bg-rose-50 text-rose-700 text-xs rounded-xl">${t('common.error')}</div>`;
+      }
+    }
+
+    // ==========================================
+    // 4. SCHEMES EXPLORER VIEW
+    // ==========================================
+    async function renderSchemesView() {
+      let schemes = [];
+      try {
+        const res = await fetch(`${API_BASE}/schemes`);
+        schemes = await res.json();
+      } catch (e) {
+        console.error(e);
+      }
+
+      const lang = MahaI18n.currentLanguage;
+
+      return `
+        <div class="max-w-6xl mx-auto px-4 py-8">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">${t('schemes.heading')}</h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">${t('schemes.subheading')}</p>
+            </div>
+            <div class="text-xs bg-amber-100 text-amber-900 px-3 py-1.5 rounded-xl font-bold border border-amber-300">
+              ${t('schemes.count_badge', { count: schemes.length })}
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            ${schemes.map(s => {
+              const displayName = lang === 'en' ? s.name_en : (lang === 'hi' ? s.name_hi : s.name_mr);
+              const subName = lang === 'en' ? s.name_mr : s.name_en;
+              return `
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-start justify-between gap-2 mb-2">
+                      <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
+                        ${s.category}
+                      </span>
+                      <span class="text-[10px] text-slate-400 font-mono">${s.id}</span>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-slate-900">${displayName}</h3>
+                    <div class="text-xs font-semibold text-slate-500 mb-3">${subName}</div>
+
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                      ${s.short_description}
+                    </p>
+
+                    <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200/60 mb-4 text-xs">
+                      <div class="font-bold text-amber-900">${t('schemes.benefit_label')}</div>
+                      <div class="text-amber-800 text-[11px] mt-0.5">${s.financial_benefit}</div>
+                    </div>
+
+                    <div class="space-y-1.5 text-xs text-slate-600">
+                      <div><strong>${t('schemes.dept_label')}</strong> ${s.department_name}</div>
+                      <div><strong>${t('schemes.target_label')}</strong> ${s.target_beneficiary}</div>
+                      <div><strong>${t('schemes.docs_label')}</strong> ${s.required_documents.slice(0, 3).join(', ')}...</div>
+                    </div>
+                  </div>
+
+                  <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-400">GR: ${s.source_gr.split(',')[0]}</span>
+                    <a href="${s.official_portal}" target="_blank" class="bg-slate-900 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition inline-flex items-center space-x-1">
+                      <span>${t('schemes.official_portal_btn')}</span>
+                      <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    </a>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // 5. SERVICES & RTS ACT VIEW
+    // ==========================================
+    async function renderServicesView() {
+      let services = [];
+      try {
+        const res = await fetch(`${API_BASE}/services`);
+        services = await res.json();
+      } catch (e) {
+        console.error(e);
+      }
+
+      const lang = MahaI18n.currentLanguage;
+
+      return `
+        <div class="max-w-6xl mx-auto px-4 py-8">
+          
+          <div class="bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg mb-8">
+            <div class="max-w-3xl">
+              <span class="text-xs bg-amber-400 text-slate-950 px-2.5 py-1 rounded font-bold uppercase tracking-wider">${t('services.badge')}</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 mb-2">${t('services.heading')}</h2>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                ${t('services.subheading')}
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            ${services.map(srv => {
+              const displayName = lang === 'en' ? srv.name_en : (lang === 'hi' ? srv.name_hi : srv.name_mr);
+              const subName = lang === 'en' ? srv.name_mr : srv.name_en;
+              return `
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-xs font-bold px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        ${t('services.rts_delivery_badge', { days: srv.statutory_rts_days })}
+                      </span>
+                      <span class="text-xs font-bold text-slate-600">${srv.government_fee}</span>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-slate-900 mt-1">${displayName}</h3>
+                    <div class="text-xs text-slate-500 font-semibold mb-3">${subName}</div>
+
+                    <p class="text-xs text-slate-600 mb-4">${srv.short_description}</p>
+
+                    <div class="space-y-2 text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200 mb-4">
+                      <div><strong>${t('services.authority_label')}</strong> ${srv.issuing_authority}</div>
+                      <div><strong>${t('services.appellate_label')}</strong> ${srv.first_appellate_authority}</div>
+                      <div><strong>${t('services.validity_label')}</strong> ${srv.validity}</div>
+                    </div>
+
+                    <div class="text-xs font-bold text-slate-800 mb-1">${t('services.required_proofs')}</div>
+                    <div class="flex flex-wrap gap-1 text-[11px] mb-4">
+                      ${srv.required_documents.map(d => `<span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">${d.name}</span>`).join('')}
+                    </div>
+                  </div>
+
+                  <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-400">Aaple Sarkar RTS Service</span>
+                    <a href="${srv.portal_url}" target="_blank" class="bg-maha-navy hover:bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition inline-flex items-center space-x-1">
+                      <span>${t('services.apply_online_btn')}</span>
+                      <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    </a>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // 6. CITIZEN GRIEVANCE REDRESSAL VIEW
+    // ==========================================
+    function renderGrievanceView() {
+      return `
+        <div class="max-w-4xl mx-auto px-4 py-8">
+          
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-extrabold text-slate-900">${t('grievance.heading')}</h2>
+            <p class="text-slate-600 text-sm mt-1">${t('grievance.subheading')}</p>
+          </div>
+
+          <div class="flex rounded-2xl bg-slate-200 p-1 mb-8 max-w-md mx-auto text-xs font-bold">
+            <button onclick="switchGrievanceTab('file')" id="tab-file" class="flex-1 py-2.5 rounded-xl bg-white text-slate-900 shadow">${t('grievance.tab_file')}</button>
+            <button onclick="switchGrievanceTab('track')" id="tab-track" class="flex-1 py-2.5 rounded-xl text-slate-600 hover:text-slate-900">${t('grievance.tab_track')}</button>
+          </div>
+
+          <div id="grievance-file-panel" class="bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-slate-200">
+            <form id="grievance-form" onsubmit="submitGrievance(event)" class="space-y-5">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-1">${t('grievance.name_label')}</label>
+                  <input type="text" id="grv-name" required placeholder="E.g. Ramesh Tukaram Patil" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium" />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-1">${t('grievance.phone_label')}</label>
+                  <input type="tel" id="grv-phone" pattern="[0-9]{10}" required placeholder="9822000000" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-1">${t('grievance.dept_label')}</label>
+                  <select id="grv-dept" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+                    <option value="DEPT-REV">Revenue & Land Records (महसूल विभाग)</option>
+                    <option value="DEPT-AGRI">Agriculture Department (कृषी विभाग)</option>
+                    <option value="DEPT-WCD">Women & Child Development (महिला व बालविकास)</option>
+                    <option value="DEPT-FOOD">Food & Civil Supplies / Ration (अन्न व नागरी पुरवठा)</option>
+                    <option value="DEPT-HEALTH">Public Health Department (आरोग्य विभाग)</option>
+                    <option value="DEPT-SJSA">Social Justice & Special Assistance</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-1">${t('grievance.district_label')}</label>
+                  <select id="grv-district" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+                    <option value="Pune">Pune (पुणे)</option>
+                    <option value="Mumbai Suburban">Mumbai Suburban (मुंबई उपनगर)</option>
+                    <option value="Nagpur">Nagpur (नागपूर)</option>
+                    <option value="Nashik">Nashik (नाशिक)</option>
+                    <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
+                    <option value="Kolhapur">Kolhapur (कोल्हापूर)</option>
+                    <option value="Thane">Thane (ठाणे)</option>
+                    <option value="Solapur">Solapur (सोलापूर)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">${t('grievance.subject_label')}</label>
+                <input type="text" id="grv-subject" required placeholder="Subject / तक्रारीचा विषय" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">${t('grievance.desc_label')}</label>
+                <textarea id="grv-desc" rows="4" required placeholder="Please describe the application number, date of submission, and issue encountered..." class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"></textarea>
+              </div>
+
+              <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold text-sm py-3.5 rounded-xl hover:from-amber-600 hover:to-orange-700 transition shadow-lg flex items-center justify-center space-x-2">
+                <i data-lucide="check-circle" class="w-5 h-5"></i>
+                <span>${t('grievance.submit_btn')}</span>
+              </button>
+            </form>
+          </div>
+
+          <div id="grievance-track-panel" class="hidden bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-slate-200">
+            <div class="flex items-center space-x-3 mb-6">
+              <input type="text" id="track-token-input" placeholder="${t('grievance.track_placeholder')}" value="MH-GRV-2026-8492" class="flex-1 text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold uppercase" />
+              <button onclick="trackGrievanceToken()" class="bg-maha-navy text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl hover:bg-amber-600 transition shadow">
+                ${t('grievance.track_btn')}
+              </button>
+            </div>
+
+            <div id="track-result" class="space-y-6"></div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function switchGrievanceTab(tType) {
+      const filePanel = document.getElementById('grievance-file-panel');
+      const trackPanel = document.getElementById('grievance-track-panel');
+      const tabFile = document.getElementById('tab-file');
+      const tabTrack = document.getElementById('tab-track');
+
+      if (tType === 'file') {
+        filePanel.classList.remove('hidden');
+        trackPanel.classList.add('hidden');
+        tabFile.className = "flex-1 py-2.5 rounded-xl bg-white text-slate-900 shadow";
+        tabTrack.className = "flex-1 py-2.5 rounded-xl text-slate-600 hover:text-slate-900";
+      } else {
+        filePanel.classList.add('hidden');
+        trackPanel.classList.remove('hidden');
+        tabTrack.className = "flex-1 py-2.5 rounded-xl bg-white text-slate-900 shadow";
+        tabFile.className = "flex-1 py-2.5 rounded-xl text-slate-600 hover:text-slate-900";
+        trackGrievanceToken();
+      }
+    }
+
+    async function submitGrievance(e) {
+      e.preventDefault();
+      const payload = {
+        citizen_name: document.getElementById('grv-name').value,
+        phone_number: document.getElementById('grv-phone').value,
+        department_id: document.getElementById('grv-dept').value,
+        district: document.getElementById('grv-district').value,
+        category: "Citizen Service Delay",
+        subject: document.getElementById('grv-subject').value,
+        description: document.getElementById('grv-desc').value,
+        preferred_language: MahaI18n.currentLanguage
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/grievance/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const rec = await res.json();
+        showToast(t('grievance.success_toast'), `${t('grievance.token_label')} ${rec.token_id}`, 'success');
+
+        document.getElementById('track-token-input').value = rec.token_id;
+        switchGrievanceTab('track');
+      } catch (err) {
+        showToast('Error', t('common.error'), 'error');
+      }
+    }
+
+    async function trackGrievanceToken() {
+      const token = document.getElementById('track-token-input').value.trim();
+      const resBox = document.getElementById('track-result');
+      if (!token) return;
+
+      resBox.innerHTML = `<div class="text-center py-6"><div class="inline-block animate-spin rounded-full h-6 w-6 border-4 border-amber-500 border-t-transparent"></div></div>`;
+
+      try {
+        const res = await fetch(`${API_BASE}/grievance/track/${token}`);
+        const data = await res.json();
+
+        if (!data.found || !data.record) {
+          resBox.innerHTML = `<div class="p-4 bg-rose-50 text-rose-700 text-xs rounded-xl">${data.message || 'Token not found.'}</div>`;
+          return;
+        }
+
+        const r = data.record;
+        resBox.innerHTML = `
+          <div class="bg-slate-900 text-white p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div class="text-xs text-amber-400 font-bold uppercase tracking-wider">${t('grievance.token_label')} ${r.token_id}</div>
+              <div class="text-lg font-bold mt-0.5">${r.subject}</div>
+              <div class="text-xs text-slate-300 mt-1">${r.department_name} • ${r.district} (${r.taluka})</div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs px-3 py-1 rounded-full font-bold bg-amber-500 text-slate-950">${r.current_status}</span>
+              <div class="text-[11px] text-slate-400 mt-1">${t('grievance.sla_label')} ${r.sla_target_days} Days</div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-bold uppercase text-slate-700 tracking-wider mb-4">${t('grievance.audit_timeline')}</h4>
+            <div class="space-y-4 pl-4 border-l-2 border-amber-400">
+              ${r.timeline.map(ti => `
+                <div class="relative pl-4">
+                  <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-amber-500 ring-4 ring-white"></div>
+                  <div class="text-xs font-bold text-slate-900">${ti.stage} — <span class="text-slate-500 font-normal">${ti.timestamp}</span></div>
+                  <div class="text-xs text-slate-600 mt-0.5 bg-slate-50 p-2 rounded-lg border border-slate-200">${ti.officer_remark}</div>
+                  <div class="text-[10px] text-slate-400 mt-1">${t('grievance.officer_label')} ${ti.updated_by}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      } catch (err) {
+        resBox.innerHTML = `<div class="p-4 bg-rose-50 text-rose-700 text-xs rounded-xl">${t('common.error')}</div>`;
+      }
+    }
+
+    // ==========================================
+    // 7. DIRECTORY VIEW
+    // ==========================================
+    async function renderDirectoryView() {
+      let districts = [];
+      try {
+        const dRes = await fetch(`${API_BASE}/directory/districts`);
+        districts = await dRes.json();
+      } catch (e) {
+        console.error(e);
+      }
+
+      const lang = MahaI18n.currentLanguage;
+
+      return `
+        <div class="max-w-6xl mx-auto px-4 py-8">
+          <div class="mb-8 text-center">
+            <h2 class="text-3xl font-extrabold text-slate-900">${t('directory.heading')}</h2>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">${t('directory.subheading')}</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            ${districts.map(d => {
+              const name = lang === 'en' ? `${d.district_name_en} (${d.district_name_mr})` : `${d.district_name_mr} (${d.district_name_en})`;
+              return `
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                  <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-lg font-bold text-slate-900">${name}</h3>
+                    <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded font-medium">${d.division}</span>
+                  </div>
+
+                  <div class="text-xs text-slate-600 space-y-1 mb-4">
+                    <div><strong>${t('directory.collectorate_label')}</strong> ${d.collectorate_address}</div>
+                    <div><strong>${t('directory.helpline_label')}</strong> <a href="tel:${d.helpline}" class="text-blue-600 font-bold">${d.helpline}</a></div>
+                  </div>
+
+                  <div class="text-xs font-bold text-slate-800 mb-2">${t('directory.taluka_kendras')}</div>
+                  <div class="space-y-2">
+                    ${d.setu_kendras.map(k => `
+                      <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs">
+                        <div class="font-bold text-slate-900">${k.name} (${k.taluka})</div>
+                        <div class="text-[11px] text-slate-500">${k.address}</div>
+                        <div class="text-[11px] text-slate-600 mt-1 flex items-center justify-between">
+                          <span>${t('directory.timings_label')} ${k.timings}</span>
+                          <span class="font-mono font-bold text-slate-800">${k.contact}</span>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // 8. ADMIN / OFFICER VIEW
+    // ==========================================
+    async function renderAdminView() {
+      let stats = {};
+      let grievances = [];
+      try {
+        const [sRes, gRes] = await Promise.all([
+          fetch(`${API_BASE}/admin/dashboard-stats`),
+          fetch(`${API_BASE}/grievance/list`)
+        ]);
+        stats = await sRes.json();
+        grievances = await gRes.json();
+      } catch (e) {
+        console.error(e);
+      }
+
+      return `
+        <div class="max-w-6xl mx-auto px-4 py-8">
+          
+          <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-lg mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs bg-amber-400 text-slate-950 px-2 py-0.5 rounded font-bold uppercase">${t('admin.badge')}</span>
+              <h2 class="text-2xl font-bold mt-1">${t('admin.heading')}</h2>
+              <p class="text-xs text-slate-300">${t('admin.subheading')}</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="navigate('translations')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1.5">
+                <i data-lucide="languages" class="w-4 h-4"></i>
+                <span>${t('nav.admin_translations')}</span>
+              </button>
+              <div class="text-xs bg-white/10 px-4 py-2 rounded-xl border border-white/10">
+                <span class="text-emerald-400 font-bold">● ${stats.system_status || 'Online'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+              <div class="text-xs text-slate-500 font-medium">${t('admin.total_schemes')}</div>
+              <div class="text-2xl font-black text-slate-900 mt-1">${stats.total_schemes || 12}</div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+              <div class="text-xs text-slate-500 font-medium">${t('admin.total_rts')}</div>
+              <div class="text-2xl font-black text-slate-900 mt-1">${stats.total_services_rts || 8}</div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+              <div class="text-xs text-slate-500 font-medium">${t('admin.total_grievances')}</div>
+              <div class="text-2xl font-black text-amber-600 mt-1">${stats.grievances_total || grievances.length}</div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+              <div class="text-xs text-slate-500 font-medium">${t('admin.compliance_rate')}</div>
+              <div class="text-2xl font-black text-emerald-600 mt-1">${stats.rts_compliance_rate || '98.4%'}</div>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+            <h3 class="text-lg font-bold text-slate-900 mb-4">${t('admin.queue_heading')}</h3>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-slate-200 text-slate-400 uppercase">
+                    <th class="py-3 px-2">${t('admin.th_token')}</th>
+                    <th class="py-3 px-2">${t('admin.th_citizen')}</th>
+                    <th class="py-3 px-2">${t('admin.th_dept')}</th>
+                    <th class="py-3 px-2">${t('admin.th_subject')}</th>
+                    <th class="py-3 px-2">${t('admin.th_priority')}</th>
+                    <th class="py-3 px-2">${t('admin.th_status')}</th>
+                    <th class="py-3 px-2">${t('admin.th_action')}</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  ${grievances.map(g => `
+                    <tr class="hover:bg-slate-50">
+                      <td class="py-3 px-2 font-mono font-bold text-amber-700">${g.token_id}</td>
+                      <td class="py-3 px-2 font-semibold text-slate-900">${g.citizen_name}<br/><span class="text-[10px] text-slate-400 font-normal">${g.phone_number}</span></td>
+                      <td class="py-3 px-2">${g.department_name}<br/><span class="text-[10px] text-slate-400">${g.district}</span></td>
+                      <td class="py-3 px-2 max-w-xs truncate">${g.subject}</td>
+                      <td class="py-3 px-2">
+                        <span class="px-2 py-0.5 rounded font-bold ${g.priority_level === 'Critical' ? 'bg-rose-100 text-rose-800' : (g.priority_level === 'High' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700')}">
+                          ${g.priority_level}
+                        </span>
+                      </td>
+                      <td class="py-3 px-2 font-bold text-slate-800">${g.current_status}</td>
+                      <td class="py-3 px-2">
+                        <button onclick="promptStatusUpdate('${g.token_id}')" class="bg-maha-navy hover:bg-amber-600 text-white px-2.5 py-1 rounded font-bold transition">
+                          ${t('admin.btn_update')}
+                        </button>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // 9. ADMIN TRANSLATIONS CACHE VIEW
+    // ==========================================
+    async function renderTranslationsView() {
+      let cacheData = { total: 0, entries: [] };
+      try {
+        const res = await fetch(`${API_BASE}/translation/cache`);
+        if (res.ok) cacheData = await res.json();
+      } catch (e) {
+        console.error(e);
+      }
+
+      return `
+        <div class="max-w-6xl mx-auto px-4 py-8">
+          
+          <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-lg mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs bg-blue-400 text-slate-950 px-2 py-0.5 rounded font-bold uppercase">${t('nav.admin_translations')}</span>
+              <h2 class="text-2xl font-bold mt-1">${t('translations.heading')}</h2>
+              <p class="text-xs text-slate-300">${t('translations.subheading')}</p>
+            </div>
+            <div class="text-xs bg-white/10 px-4 py-2 rounded-xl border border-white/10">
+              <span class="text-white font-bold">${t('translations.total_cached')} ${cacheData.total}</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-slate-200 text-slate-400 uppercase">
+                    <th class="py-3 px-2">${t('translations.th_id')}</th>
+                    <th class="py-3 px-2">${t('translations.th_source')}</th>
+                    <th class="py-3 px-2">${t('translations.th_target')}</th>
+                    <th class="py-3 px-2">${t('translations.th_text')}</th>
+                    <th class="py-3 px-2">${t('translations.th_translated')}</th>
+                    <th class="py-3 px-2">${t('translations.th_provider')}</th>
+                    <th class="py-3 px-2">${t('translations.th_actions')}</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  ${cacheData.entries.length > 0 ? cacheData.entries.map(e => `
+                    <tr class="hover:bg-slate-50">
+                      <td class="py-3 px-2 font-mono font-bold text-blue-700">${e.id}</td>
+                      <td class="py-3 px-2 uppercase font-bold text-slate-600">${e.source_language}</td>
+                      <td class="py-3 px-2 uppercase font-bold text-amber-700">${e.target_language}</td>
+                      <td class="py-3 px-2 max-w-xs truncate text-slate-700">${escapeHtml(e.source_text)}</td>
+                      <td class="py-3 px-2 max-w-xs font-semibold text-slate-900">${escapeHtml(e.translated_text)}</td>
+                      <td class="py-3 px-2">
+                        <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-mono border border-slate-200">${e.provider}</span>
+                      </td>
+                      <td class="py-3 px-2 flex items-center space-x-1.5">
+                        <button onclick="editTranslationEntry('${e.id}', '${escapeHtml(e.translated_text)}')" class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-[11px] font-bold transition">
+                          ${t('translations.btn_edit')}
+                        </button>
+                        <button onclick="deleteTranslationEntry('${e.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-1 rounded text-[11px] font-bold transition">
+                          ${t('translations.btn_delete')}
+                        </button>
+                      </td>
+                    </tr>
+                  `).join('') : `
+                    <tr>
+                      <td colspan="7" class="py-8 text-center text-slate-400">
+                        No dynamic translations in cache yet. Dynamic terms requested by users are automatically cached here.
+                      </td>
+                    </tr>
+                  `}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    async function editTranslationEntry(id, currentText) {
+      const newText = prompt(`Edit translation for ${id}:`, currentText);
+      if (!newText || newText === currentText) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/translation/cache/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ new_translation: newText })
+        });
+        if (res.ok) {
+          showToast('Updated', 'Translation entry updated.', 'success');
+          renderCurrentView();
+        }
+      } catch (e) {
+        showToast('Error', 'Could not update translation', 'error');
+      }
+    }
+
+    async function deleteTranslationEntry(id) {
+      if (!confirm(`Are you sure you want to delete cache entry ${id}?`)) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/translation/cache/${id}`, {
+          method: 'DELETE'
+        });
+        if (res.ok) {
+          showToast('Deleted', 'Translation entry removed.', 'success');
+          renderCurrentView();
+        }
+      } catch (e) {
+        showToast('Error', 'Could not delete entry', 'error');
+      }
+    }
+
+    async function promptStatusUpdate(token) {
+      const newStatus = prompt(`Select status:\n1. Assigned\n2. Under Investigation\n3. Action In Progress\n4. Resolved`, 'Resolved');
+      if (!newStatus) return;
+      const remark = prompt('Officer Remark:', 'Verification complete. Action taken under RTS Act standards.');
+      if (!remark) return;
+
+      try {
+        await fetch(`${API_BASE}/grievance/update-status/${token}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            new_status: newStatus,
+            remark: remark,
+            officer_name: "Desk Officer / Tahsildar"
+          })
+        });
+        showToast('Updated', `Token ${token} updated.`, 'success');
+        renderCurrentView();
+      } catch (e) {
+        showToast('Error', t('common.error'), 'error');
+      }
+    }
+
+    // App Initialization
+    window.addEventListener('DOMContentLoaded', async () => {
+      await MahaI18n.init();
+      initChatHistory();
+      renderCurrentView();
+    });
+  </script>
+</body>
+</html>
